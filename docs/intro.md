@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# HitPaw API
+# HitPaw
 
 Let's discover **Docusaurus in less than 5 minutes**.
 
