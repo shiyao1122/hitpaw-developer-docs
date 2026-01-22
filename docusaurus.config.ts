@@ -76,10 +76,11 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'HitPaw Docs',
+      title: 'HitPaw',
       logo: {
         alt: 'HitPaw Docs',
         src: 'img/logo.svg',
+        srcDark: 'img/logo-dark.svg',
       },
       items: [
         {
