@@ -28,3 +28,10 @@
   --ifm-color-primary-lightest: #c09eff;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* 当 html 标签有 data-theme='dark' 属性时（即深色模式下） */
+[data-theme='dark'] .navbar__logo {
+  /* 这里使用滤镜反转颜色，或者调节亮度 */
+  /* 示例：将黑色 Logo 翻转为白色 */
+  filter: invert(100%);
+}
