@@ -65,6 +65,11 @@ const config: Config = {
     ],
   ],
 
+  //注册插件
+  plugins: [
+    'docusaurus-plugin-image-zoom',
+  ],
+
   themeConfig: {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
@@ -140,6 +145,19 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+    },
+    //配置放大效果
+    zoom: {
+      selector: '.markdown img',  // 指定哪些图片可以放大 (通常设为 markdown 内容里的图片)
+      background: {
+        light: 'rgb(255, 255, 255)', // 亮色模式下的背景色
+        dark: 'rgb(50, 50, 50)'      // 深色模式下的背景色
+      },
+      config: {
+        // 这里的选项参考 medium-zoom 的官方文档
+        margin: 24,
+        scrollOffset: 0,
+      }
     },
   } satisfies Preset.ThemeConfig,
 };
