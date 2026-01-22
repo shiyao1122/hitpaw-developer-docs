@@ -101,15 +101,7 @@ const config: Config = {
     footer: {
       style: 'dark',
       links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Tutorial',
-              to: '/',
-            },
-          ],
-        },
+
         {
           title: 'Community',
           items: [
@@ -134,10 +126,12 @@ const config: Config = {
         {
           title: 'More',
           items: [
-            {
+            /**
+             * {
               label: 'Blog',
               to: '/blog',
             },
+            */
             {
               label: 'GitHub',
               href: 'https://github.com/facebook/docusaurus',
