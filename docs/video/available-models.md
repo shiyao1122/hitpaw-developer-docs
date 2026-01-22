@@ -7,6 +7,7 @@ import compare_portrait_restore_video_1 from './asset/compare_portrait_restore_v
 import compare_general_restore_video_1 from './asset/compare_general_restore_video_1.mp4';
 import compare_general_restore_video_2 from './asset/compare_general_restore_video_2.mp4'; 
 import compare_ultra_hd_video_1 from './asset/compare_ultra_hd_video_1.mp4'; 
+import compare_generative_video_1 from './asset/compare_generative_video_1.mp4';
 
 # Available Models
 
@@ -109,6 +110,6 @@ Best for extremely low-quality video sources that require significant reconstruc
 **Examples:**
 <div style={{ display: 'flex', justifyContent: 'center' }}>
   <video muted controls preload width="80%">
-    <source src={compare_face_soft_video_1} type="video/mp4" />
+    <source src={compare_generative_video_1} type="video/mp4" />
   </video>
 </div>
