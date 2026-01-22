@@ -1,6 +1,7 @@
 {
-  "label": "Video",
+  "label": "Video Enhancement API",
   "position": 2,
+  "collapsible": false,
   "link": {
     "type": "generated-index"
   }

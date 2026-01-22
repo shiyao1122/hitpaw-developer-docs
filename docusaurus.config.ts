@@ -5,8 +5,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'HitPaw',
-  tagline: 'Dinosaurs are cool',
+  title: 'HitPaw API Documents',
+  tagline: 'The world\'s most powerful AI media enhancement models',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -34,6 +34,10 @@ const config: Config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
+  stylesheets: [
+    // 引入 Montserrat 字体（包含常规、中等、粗体）
+    'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap',
+  ],
 
   presets: [
     [
@@ -42,10 +46,6 @@ const config: Config = {
         docs: {
           routeBasePath: '/', // 把文档路径设置为根目录
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/HitPaw-Official/hitpaw-developer-docs/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: {
           showReadingTime: true,
@@ -53,10 +53,6 @@ const config: Config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/HitPaw-Official/hitpaw-developer-docs/tree/main/packages/create-docusaurus/templates/shared/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -76,9 +72,9 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'HitPaw',
+      title: 'HitPaw API',
       logo: {
-        alt: 'HitPaw Docs',
+        alt: 'HitPaw API',
         src: 'img/logo.svg',
         srcDark: 'img/logo-dark.svg',
       },

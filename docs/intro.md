@@ -3,7 +3,7 @@ sidebar_position: 1
 slug: / 
 ---
 
-# HitPaw AI 
+# HitPaw Enhancement API
 
 Access the world's most powerful AI media enhancement models designed for professional scale. Our technology provides the "last-mile" solution for improving the quality of images and videos, trusted by industry leaders to deliver industrial-grade results for everything from vintage archives to modern user-generated content.
 

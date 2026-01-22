@@ -15,6 +15,8 @@
   --ifm-color-primary-lightest: #c09eff;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  /* 覆盖 Docusaurus 的基础字体变量 */
+  --ifm-font-family-base: "Montserrat", system-ui, "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -27,11 +29,6 @@
   --ifm-color-primary-lighter: #a16fff;
   --ifm-color-primary-lightest: #c09eff;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-}
-
-/* 当 html 标签有 data-theme='dark' 属性时（即深色模式下） */
-[data-theme='dark'] .navbar__logo {
-  /* 这里使用滤镜反转颜色，或者调节亮度 */
-  /* 示例：将黑色 Logo 翻转为白色 */
-  filter: invert(100%);
+  /* 覆盖 Docusaurus 的基础字体变量 */
+  --ifm-font-family-base: "Montserrat", system-ui, "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
