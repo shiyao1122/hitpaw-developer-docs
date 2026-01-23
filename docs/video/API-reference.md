@@ -116,6 +116,12 @@ Use the following values for the `model_name` parameter:
 | Ultra HD Model | `ultrahd_restore` |
 | Generative Model (SD) | `generative` |
 
+## Model Specifications
+
+| API `model_name` | Supported Input Formats | Max Input Resolution | Supported Output Formats | Max Output Resolution | Duration |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **All Video Models** | dv, mlv, m2ts, m2t, m2v, nut, ser, 3g2, 3gp, asf, divx, f4v, h261, h263, m4v, mkv, mov, mp4, mpeg, mpeg4, mpg, mxf, ogv, rm, rmvb, webm, wmv, dmsm, dvdmedia, dvr-ms, mts, trp, ts, vob, vro, gif, xvid | No limit | mp4, mov, mkv, m4v, avi, gif | 36 MP (Total Pixels) | 0.5s to 1 hour |
+
 ## Task Status
 
 **Endpoint:** `POST /api/task-status`
