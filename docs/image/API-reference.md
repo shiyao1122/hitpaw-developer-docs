@@ -119,8 +119,8 @@ Use the following values for the `model_name` parameter in your request:
 
 | API `model_name` | Supported Input Formats | Max Input Resolution | Supported Output Formats | Max Output Resolution |
 | :--- | :--- | :--- | :--- | :--- |
-| **Enhancement & Denoise Models**<br>`face_2x/4x`, `face_v2_2x/4x`, `general_2x/4x`, `high_fidelity_2x/4x`, `sharpen_denoise`, `detail_denoise` | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif | 67 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp | 600 MP |
-| **Generative Models**<br>`generative_portrait`, `generative` | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif | No limit | bmp, jpeg, jpg, png, jfif, tga, tiff, webp | 8K (33 MP) |
+| **Enhancement &amp; Denoise Models**<br />`face_2x/4x`, `face_v2_2x/4x`, `general_2x/4x`, `high_fidelity_2x/4x`, `sharpen_denoise`, `detail_denoise` | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif | 67 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp | 600 MP |
+| **Generative Models**<br />`generative_portrait`, `generative` | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif | No limit | bmp, jpeg, jpg, png, jfif, tga, tiff, webp | 8K (33 MP) |
 
 ## Task Status
 
