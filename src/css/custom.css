@@ -39,3 +39,14 @@
   background-color: #080211 !important;
   /* 加上 !important 是为了确保覆盖掉默认的灰色背景 */
 }
+
+/* 彻底移除所有标题的锚点显示 */
+h1:hover .hash-link,
+h2:hover .hash-link,
+h3:hover .hash-link,
+h4:hover .hash-link,
+h5:hover .hash-link,
+h6:hover .hash-link {
+  visibility: hidden !important;
+  display: none !important;
+}
