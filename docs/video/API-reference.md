@@ -44,8 +44,12 @@ All API requests require authentication.
 **Response:**
 ```json
 {
-  "job_id": "string",
-  "consume_coins": 0
+    "code": 200,
+    "message": "OK",
+    "data": {
+        "job_id": "f5007c0b-e902-4070-8c75-f337d896168f",
+        "consume_coins": 75
+    }
 }
 ```
 
@@ -60,7 +64,7 @@ All API requests require authentication.
 ```bash
 curl -X POST https://api-base.hitpaw.com/api/video-enhancer \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Apikey: YOUR_API_KEY" \
   -d '{
     "video_url": "https://example.com/video.mp4",
     "model_name": "video_enhance_v2",
@@ -79,7 +83,7 @@ url = "https://api-base.hitpaw.com/api/video-enhancer"
 
 headers = {
     "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_API_KEY"
+    "Apikey": "YOUR_API_KEY"
 }
 
 payload = {
@@ -134,10 +138,14 @@ Use the following values for the `model_name` parameter:
 **Response:**
 ```json
 {
-  "job_id": "string",
-  "status": "string",
-  "res_url": "string",
-  "original_url": "string"
+    "code": 200,
+    "message": "OK",
+    "data": {
+        "job_id": "string",
+        "status": "string",
+        "res_url": "string",
+        "original_url": "string"
+    }
 }
 ```
 
@@ -162,7 +170,7 @@ Use the following values for the `model_name` parameter:
 ```bash
 curl -X POST https://api-base.hitpaw.com/api/task-status \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Apikey: YOUR_API_KEY" \
   -d '{
     "job_id": "abc123def456"
   }'
@@ -178,7 +186,7 @@ url = "https://api-base.hitpaw.com/api/task-status"
 
 headers = {
     "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_API_KEY"
+    "Apikey": "YOUR_API_KEY"
 }
 
 payload = {
@@ -324,7 +332,7 @@ class HitPawAPIClient:
         self.base_url = base_url
         self.headers = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}"
+            "Apikey": api_key
         }
     
     def enhance_video(self, video_url, model_name, resolution, extension=".mp4", 

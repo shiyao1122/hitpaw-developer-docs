@@ -19,11 +19,11 @@ All API requests require authentication.
 **Request Body:**
 ```json
 {
-  "model_name": "string",
-  "img_url": "string",
-  "extension": "string",
-  "exif": false,
-  "DPI": 0
+    "model_name": "generative_portrait",
+    "img_url": "https://i.ibb.co/TDLJLgVR/face-model-before.jpg",
+    "extension": ".jpg",
+    "exif": true,
+    "DPI": 300
 }
 ```
 
@@ -40,8 +40,12 @@ All API requests require authentication.
 **Response:**
 ```json
 {
-  "job_id": "string",
-  "consume_coins": 0
+    "code": 200,
+    "message": "OK",
+    "data": {
+        "job_id": "f5007c0b-e902-4070-8c75-f337d896168f",
+        "consume_coins": 75
+    }
 }
 ```
 
@@ -56,7 +60,7 @@ All API requests require authentication.
 ```bash
 curl -X POST https://api-base.hitpaw.com/api/photo-enhancer \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Apikey: YOUR_API_KEY" \
   -d '{
     "model_name": "enhanced_v1",
     "img_url": "https://example.com/image.jpg",
@@ -75,7 +79,7 @@ url = "https://api-base.hitpaw.com/api/photo-enhancer"
 
 headers = {
     "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_API_KEY"
+    "Apikey": "YOUR_API_KEY"
 }
 
 payload = {
@@ -134,10 +138,14 @@ Use the following values for the `model_name` parameter in your request:
 **Response:**
 ```json
 {
-  "job_id": "string",
-  "status": "string",
-  "res_url": "string",
-  "original_url": "string"
+    "code": 200,
+    "message": "OK",
+    "data": {
+        "job_id": "string",
+        "status": "string",
+        "res_url": "string",
+        "original_url": "string"
+    }
 }
 ```
 
@@ -162,7 +170,7 @@ Use the following values for the `model_name` parameter in your request:
 ```bash
 curl -X POST https://api-base.hitpaw.com/api/task-status \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Apikey: YOUR_API_KEY" \
   -d '{
     "job_id": "abc123def456"
   }'
@@ -178,7 +186,7 @@ url = "https://api-base.hitpaw.com/api/task-status"
 
 headers = {
     "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_API_KEY"
+    "Apikey": "YOUR_API_KEY"
 }
 
 payload = {
@@ -321,7 +329,7 @@ class HitPawAPIClient:
         self.base_url = base_url
         self.headers = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}"
+            "Apikey": api_key
         }
     
     def enhance_photo(self, img_url, model_name="enhanced_v1", extension=".jpg", exif=True, dpi=300):
