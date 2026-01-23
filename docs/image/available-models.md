@@ -4,6 +4,42 @@ sidebar_position: 2
 
 # Available Models
 
+## Generative & Diffusion
+
+### Generative Portrait Model
+*Corresponding to: Generative Portrait Model*
+
+**Overview:**
+A Diffusion-based super-resolution interface specifically for human subjects. It supports adjustable upscaling (1x to 4x) and adapts to the portrait to generate high-fidelity details.
+
+**Technical Features:**
+Leverages **Diffusion technology** to hallucinate and reconstruct realistic details. It prioritizes natural skin textures and facial features, significantly improving clarity while maintaining a natural look.
+
+**Use Cases:**
+Best for extremely low-quality portraits where traditional upscalers fail. It "re-imagines" the details to create a high-quality portrait from a blurry input.
+
+**Examples:**
+<div style={{ textAlign: 'center' }}>
+  <img src={require('./img/comparison-gen_portrait.jpg').default} width="80%" />
+</div>
+
+### Generative Enhance Model
+*Corresponding to: Generative Enhance Model*
+
+**Overview:**
+A general-purpose Diffusion super-resolution interface. It supports adjustable upscaling (1x to 4x) and adapts to various content types to enhance low-quality images.
+
+**Technical Features:**
+Focuses on **texture generation and sharpening**. It excels at reconstructing fine details and textures in non-human subjects (landscapes, objects, architecture), producing a highly sharp and detailed output.
+
+**Use Cases:**
+Ideal for heavily compressed or very low-resolution general images that require significant reconstruction of details to look acceptable at higher resolutions.
+
+**Examples:**
+<div style={{ textAlign: 'center' }}>
+  <img src={require('./img/comparison-gen_enhance.png').default} width="80%" />
+</div>
+
 ## Upscale & Enhancement
 
 ### Portrait Model (Clear)
@@ -122,40 +158,4 @@ Ideal for images where preserving subtle textures is more important than achievi
 **Examples:**
 <div style={{ textAlign: 'center' }}>
   <img src={require('./img/comparison-detail_denoise.jpg').default} width="80%" />
-</div>
-
-## Generative & Diffusion
-
-### Generative Portrait Model
-*Corresponding to: Generative Portrait Model*
-
-**Overview:**
-A Diffusion-based super-resolution interface specifically for human subjects. It supports adjustable upscaling (1x to 4x) and adapts to the portrait to generate high-fidelity details.
-
-**Technical Features:**
-Leverages **Diffusion technology** to hallucinate and reconstruct realistic details. It prioritizes natural skin textures and facial features, significantly improving clarity while maintaining a natural look.
-
-**Use Cases:**
-Best for extremely low-quality portraits where traditional upscalers fail. It "re-imagines" the details to create a high-quality portrait from a blurry input.
-
-**Examples:**
-<div style={{ textAlign: 'center' }}>
-  <img src={require('./img/comparison-gen_portrait.jpg').default} width="80%" />
-</div>
-
-### Generative Enhance Model
-*Corresponding to: Generative Enhance Model*
-
-**Overview:**
-A general-purpose Diffusion super-resolution interface. It supports adjustable upscaling (1x to 4x) and adapts to various content types to enhance low-quality images.
-
-**Technical Features:**
-Focuses on **texture generation and sharpening**. It excels at reconstructing fine details and textures in non-human subjects (landscapes, objects, architecture), producing a highly sharp and detailed output.
-
-**Use Cases:**
-Ideal for heavily compressed or very low-resolution general images that require significant reconstruction of details to look acceptable at higher resolutions.
-
-**Examples:**
-<div style={{ textAlign: 'center' }}>
-  <img src={require('./img/comparison-gen_enhance.png').default} width="80%" />
 </div>

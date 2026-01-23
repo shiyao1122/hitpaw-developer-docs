@@ -13,6 +13,47 @@ import compare_generative_video_1 from './asset/compare_generative_video_1.mp4';
 
 ## Video Restoration & Upscale
 
+### Ultra HD Model
+*Corresponding to: Ultra HD Model*
+
+**Overview:**
+A super-resolution interface designed for high-definition output. It enhances video clarity and restores natural, fine textures to achieve "Ultra HD" quality.
+
+**Technical Features:**
+Relies on **Deep Convolution and Feature Learning**. It excavates fine textures from the base image data to improve resolution and overall clarity. It is specifically tuned to handle mid-frequency textures, ensuring that lines are smooth (anti-aliased) and free of jagged edges, resulting in a clean, professional upscale.
+
+**Use Cases:**
+Ideal for upscaling 1080p content to 4K, ensuring that the resulting video looks natural and free of the artificial "digital" look common in basic upscalers.
+
+**Examples:**
+<div style={{ display: 'flex', justifyContent: 'center' }}>
+  <video muted controls preload width="80%">
+    <source src={compare_ultra_hd_video_1} type="video/mp4" />
+  </video>
+</div>
+
+### Generative Video Model
+*Corresponding to: Generative Model*
+
+**Overview:**
+A cutting-edge video generation and repair interface based on advanced Stable Diffusion (SD) technology. It is specifically engineered to salvage extremely low-quality video inputs by hallucinating and reconstructing natural, realistic details that traditional upscalers cannot recover.
+
+**Technical Features:**
+*   **Superior Temporal Consistency:** Leverages a multi-frame SD architecture with sophisticated **cross-frame temporal modeling** (including Temporal Attention and Memory Mechanisms). This significantly eliminates flickering and "pixel drift," ensuring that video details remain stable and consistent throughout the entire time dimension.
+*   **Enhanced Multi-Frame Reconstruction:** By **fusing information across multiple frames**, the model can identify and complete missing details that are unrecoverable from single-frame analysis. This leads to higher quality, more credible texture reconstruction and authentic surface rendering.
+*   **Robustness to Complex Degradation:** The multi-frame modeling approach provides exceptional resilience against severe information loss. It effectively mitigates artifacts caused by heavy compression, high-ISO sensor noise, and complex motion blur, bridging the gap between restoration and cinematic creation.
+*   **Logic-Based Synthesis:** Beyond simple sharpening, it understands the visual logic of the content to rebuild textures with high fidelity to the original scene's intent.
+
+**Use Cases:**
+Best for "impossible" restoration tasks involving extremely low-quality video sources. Ideal for remastering heavily compressed legacy media, fixing high-speed motion blur, and salvaging footage with very little original detail to create a modern, high-definition viewing experience.
+
+**Examples:**
+<div style={{ display: 'flex', justifyContent: 'center' }}>
+  <video muted controls preload width="80%">
+    <source src={compare_generative_video_1} type="video/mp4" />
+  </video>
+</div>
+
 ### Video Face Soft Model
 *Corresponding to: Face Soft Model*
 
@@ -73,43 +114,5 @@ Suitable for general video content improvement, such as remastering old clips, f
 <div style={{ display: 'flex', justifyContent: 'center' }}>
   <video muted controls preload width="80%">
     <source src={compare_general_restore_video_2} type="video/mp4" />
-  </video>
-</div>
-
-### Ultra HD Model
-*Corresponding to: Ultra HD Model*
-
-**Overview:**
-A super-resolution interface designed for high-definition output. It enhances video clarity and restores natural, fine textures to achieve "Ultra HD" quality.
-
-**Technical Features:**
-Relies on **Deep Convolution and Feature Learning**. It excavates fine textures from the base image data to improve resolution and overall clarity. It is specifically tuned to handle mid-frequency textures, ensuring that lines are smooth (anti-aliased) and free of jagged edges, resulting in a clean, professional upscale.
-
-**Use Cases:**
-Ideal for upscaling 1080p content to 4K, ensuring that the resulting video looks natural and free of the artificial "digital" look common in basic upscalers.
-
-**Examples:**
-<div style={{ display: 'flex', justifyContent: 'center' }}>
-  <video muted controls preload width="80%">
-    <source src={compare_ultra_hd_video_1} type="video/mp4" />
-  </video>
-</div>
-
-### Generative Video Model
-*Corresponding to: Generative Model*
-
-**Overview:**
-A video generation and repair interface based on Stable Diffusion (SD) technology. It enhances low-resolution video inputs by reconstructing natural and realistic details.
-
-**Technical Features:**
-Utilizes **progressive generation and logic-based reconstruction**. It improves video resolution while optimizing overall picture quality. By understanding the visual logic of the video content, it rebuilds details (textures, surfaces) effectively. It addresses common generative issues like "ghosting" or texture inconsistency, ensuring smooth playback and high fidelity to the original scene's logic.
-
-**Use Cases:**
-Best for extremely low-quality video sources that require significant reconstruction to be viewable. It bridges the gap between restoration and creation to salvage footage with very little original detail.
-
-**Examples:**
-<div style={{ display: 'flex', justifyContent: 'center' }}>
-  <video muted controls preload width="80%">
-    <source src={compare_generative_video_1} type="video/mp4" />
   </video>
 </div>
