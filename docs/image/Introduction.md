@@ -32,13 +32,13 @@ In general, our Image API offers two classes of AI models to suit different need
 </div>
 
 ## Authentication
+
 You will need an API key in order to make requests to this API. Make sure you never share your API key with anyone, and never commit it to a public repository.
 
 Once you have your API key, set it as the `APIKEY` header of your requests.
 
-If you've purchased, get your API KEY in [personal center](https://accounts.hitpaw.com/#/cusCenter).
-
-Already have your API Key? Skip the local setup and test the API directly in your browser.[Explore Playground ↗](https://playground.hitpaw.com/)   
+*   **Don't have an API key?** Get started by [Purchasing an API Key Now](https://www.hitpaw.com/hitpaw-api.html).
+*   **Already have your API Key?** Skip the local setup and test the API directly in your browser. [Explore Playground →](https://playground.hitpaw.com/)
 
 ## API Restrictions
 *   **Rate Limits:** The API has access rate limits depending on the current load on the servers. If you receive an `HTTP 429` response, please try again soon. We recommend using an exponential backoff strategy for requests to avoid hitting the limit again.
