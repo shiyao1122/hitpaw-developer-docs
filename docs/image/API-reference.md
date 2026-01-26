@@ -35,7 +35,7 @@ All API requests require authentication.
 | img_url | string | Yes | URL of the image to be enhanced |
 | extension | string | Yes | File extension of the image (e.g., ".jpg", ".png") |
 | exif | boolean | No | Whether to preserve EXIF data (default: false) |
-| DPI | integer | No | Target DPI metadata for the output image (default: 72). Does not affect pixel scaling. |
+| DPI | integer | No | Target DPI metadata for the output image (default: 72). **Note: Supported only for non-Generative models.** Does not affect pixel scaling. |
 
 **Response:**
 ```json
@@ -140,10 +140,12 @@ Use the following values for the `model_name` parameter in your request:
 
 ## Model Specifications
 
-| API `model_name` | Supported Input Formats | Max Input Resolution | Supported Output Formats | Max Output Resolution |
+| API `model_name` Category | DPI Support | Max Input Resolution | Max Output Resolution | Supported Formats (In/Out) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Enhancement &amp; Denoise Models**<br />`face_2x/4x`, `face_v2_2x/4x`, `general_2x/4x`, `high_fidelity_2x/4x`, `sharpen_denoise`, `detail_denoise` | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif | 67 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp | 600 MP |
-| **Generative Models**<br />`generative_portrait`, `generative` | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif | No limit | bmp, jpeg, jpg, png, jfif, tga, tiff, webp | 8K (33 MP) |
+| **Enhancement & Denoise Models**<br />`face_...`, `general_...`, `high_fidelity_...`, `sharpen_denoise`, `detail_denoise` | **Yes** | 67 MP | 600 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif |
+| **Generative Models**<br />`generative_portrait`, `generative` | **No** | No limit | 8K (33 MP) | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif |
+
+> **Note:** The `DPI` parameter is only functional for Enhancement and Denoise models. For all Generative models, this parameter will be ignored.
 
 ## Task Status
 
