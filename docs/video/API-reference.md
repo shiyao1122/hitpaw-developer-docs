@@ -110,11 +110,11 @@ Use the following values for the `model_name` parameter:
 
 | Display Name | API `model_name` Value |
 | :--- | :--- |
-| Face Soft Model | `face_soft` |
+| Face Soft Model 2x | `face_soft_2x` |
 | Portrait Restore Model 1x/2x | `portrait_restore_1x` / `portrait_restore_2x` |
 | General Restore Model 1x/2x/4x | `general_restore_1x` / `general_restore_2x` / `general_restore_4x` |
-| Ultra HD Model | `ultrahd_restore` |
-| Generative Model (SD) | `generative` |
+| Ultra HD Model 2x | `ultrahd_restore_2x` |
+| Generative Model 1x | `generative_1x` |
 
 ## Task Status
 
@@ -142,9 +142,9 @@ Use the following values for the `model_name` parameter:
     "message": "OK",
     "data": {
         "job_id": "string",
-        "status": "string",
-        "res_url": "string",
-        "original_url": "string"
+    "status": "string",
+    "res_url": "string",
+    "original_url": "string"
     }
 }
 ```

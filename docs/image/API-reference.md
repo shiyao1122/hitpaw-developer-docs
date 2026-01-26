@@ -110,10 +110,10 @@ Use the following values for the `model_name` parameter in your request:
 | Face Natural Model 2x/4x | `face_v2_2x`/`face_v2_4x` |
 | General Enhance Model 2x/4x | `general_2x`/`general_4x` |
 | High Fidelity Model 2x/4x | `high_fidelity_2x`/`high_fidelity_4x` |
-| Sharp Denoise Model | `sharpen_denoise` |
-| Detail Denoise Model | `detail_denoise` |
-| Generative Portrait Model | `generative_portrait` |
-| Generative Enhance Model | `generative` |
+| Sharp Denoise Model 1x | `sharpen_denoise_1x` |
+| Detail Denoise Model 1x | `detail_denoise_1x` |
+| Generative Portrait Model 1x/2x/4x | `generative_portrait_1x`/`generative_portrait_2x`/`generative_portrait_4x` |
+| Generative Enhance Model 1x/2x/4x | `generative_1x`/`generative_2x`/`generative_4x` |
 
 
 ## Task Status
