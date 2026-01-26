@@ -35,7 +35,7 @@ All API requests require authentication.
 | img_url | string | Yes | URL of the image to be enhanced |
 | extension | string | Yes | File extension of the image (e.g., ".jpg", ".png") |
 | exif | boolean | No | Whether to preserve EXIF data (default: false) |
-| DPI | integer | No | Target DPI metadata for the output image (default: 72). **Note: Supported only for non-Generative models.** Does not affect pixel scaling. |
+| DPI | integer | No | Target DPI metadata for the output image (default: original). **Note: Supported only for non-Generative models.** Does not affect pixel scaling. |
 
 **Response:**
 ```json
