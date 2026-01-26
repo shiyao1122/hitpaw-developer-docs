@@ -31,11 +31,11 @@ All API requests require authentication.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| model_name | string | Yes | The model name to use for enhancement |
+| model_name | string | Yes | The model name to use. The suffix (2x/4x) determines the output resolution. |
 | img_url | string | Yes | URL of the image to be enhanced |
 | extension | string | Yes | File extension of the image (e.g., ".jpg", ".png") |
 | exif | boolean | No | Whether to preserve EXIF data (default: false) |
-| DPI | integer | No | Target DPI for the output image |
+| DPI | integer | No | Target DPI metadata for the output image (default: 72). Does not affect pixel scaling. |
 
 **Response:**
 ```json
@@ -100,6 +100,29 @@ else:
     print(f"Error: {response.status_code}")
     print(response.text)
 ```
+## Output Resolution Control
+
+The output resolution of your processed image is directly determined by the `model_name` you select. The multiplier suffix (e.g., `2x`, `4x`) indicates how much the image dimensions will be scaled.
+
+*   **Resolution Calculation:** `Output Pixels = Input Pixels × Multiplier`.
+    *   **2x Models** (e.g., `general_2x`): Doubles both the width and height (e.g., 1000px → 2000px).
+    *   **4x Models** (e.g., `general_4x`): Quadruples both the width and height (e.g., 1000px → 4000px).
+    *   **1x Models** (e.g., `sharpen_denoise`): Maintains the original input resolution.
+
+*   **About DPI (Dots Per Inch):**
+    The `DPI` parameter in the request body is used to set the **print metadata** of the image. 
+    *   Changing the DPI value **does not** change the digital pixel count or the resolution of the image. 
+    *   It only affects how the image is scaled when printed on physical paper. 
+    *   For digital display, the image quality and size are solely controlled by the **2x/4x** model selection.
+
+**Example Scenarios:**
+
+| Input Resolution | Selected Model | Target DPI | Output Resolution | Metadata DPI |
+| :--- | :--- | :--- | :--- | :--- |
+| 1024 x 1024 px | `face_2x` | 300 | 2048 x 2048 px | 300 |
+| 1024 x 1024 px | `face_4x` | 72 | 4096 x 4096 px | 72 |
+| 1024 x 1024 px | `detail_denoise` | 300 | 1024 x 1024 px | 300 |
+
 
 ## Available Models
 Use the following values for the `model_name` parameter in your request:
@@ -115,6 +138,12 @@ Use the following values for the `model_name` parameter in your request:
 | Generative Portrait Model 1x/2x/4x | `generative_portrait_1x`/`generative_portrait_2x`/`generative_portrait_4x` |
 | Generative Enhance Model 1x/2x/4x | `generative_1x`/`generative_2x`/`generative_4x` |
 
+## Model Specifications
+
+| API `model_name` | Supported Input Formats | Max Input Resolution | Supported Output Formats | Max Output Resolution |
+| :--- | :--- | :--- | :--- | :--- |
+| **Enhancement &amp; Denoise Models**<br />`face_2x/4x`, `face_v2_2x/4x`, `general_2x/4x`, `high_fidelity_2x/4x`, `sharpen_denoise`, `detail_denoise` | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif | 67 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp | 600 MP |
+| **Generative Models**<br />`generative_portrait`, `generative` | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif | No limit | bmp, jpeg, jpg, png, jfif, tga, tiff, webp | 8K (33 MP) |
 
 ## Task Status
 
