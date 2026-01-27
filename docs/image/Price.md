@@ -27,13 +27,15 @@ Generative models are priced based on the creative reconstruction level and outp
 #### Generative Portrait Model
 | Quality Tier | Pixel Count Range | Reference Spec | Price (Credits) | Price (USD) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Gen HD** | < 2 MP | 1080P | **50** | $0.05 |
-| **Gen QHD** | 2 - 5 MP | 1440P | **75** | $0.075 |
-| **Gen UHD** | 5 - 8 MP | 2160P | **100** | $0.1 |
+| **Gen HD** | < 8 MP | 1080P / 2K / 4K | **20** | $0.02 |
+| **Gen Ultra HD** | 8 - 12 MP | 4K+ | **30** | $0.03 |
+| **Gen Extreme HD** | 12 - 24 MP | 5K / 6K | **40** | $0.04 |
+| **Gen Cinema** | 24 - 34 MP | 8K | **60** | $0.06 |
 
 #### Generative Enhance Model
 | Quality Tier | Pixel Count Range | Reference Spec | Price (Credits) | Price (USD) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Gen HD** | < 2 MP | 1080P | **80** | $0.08 |
-| **Gen QHD** | 2 - 5 MP | 1440P | **160** | $0.16 |
-| **Gen UHD** | 5 - 8 MP | 2160P | **400** | $0.4 |
+| **Gen HD** | < 8 MP | 1080P / 2K / 4K | **80** | $0.05 |
+| **Gen Ultra HD** | 8 - 12 MP | 4K+ | **60** | $0.06 |
+| **Gen Extreme HD** | 12 - 24 MP | 5K / 6K | **80** | $0.08 |
+| **Gen Cinema** | 24 - 34 MP | 8K | **150** | $0.15 |

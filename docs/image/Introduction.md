@@ -42,7 +42,6 @@ Once you have your API key, set it as the `APIKEY` header of your requests.
 
 ## API Restrictions
 *   **Rate Limits:** The API has access rate limits depending on the current load on the servers. If you receive an `HTTP 429` response, please try again soon. We recommend using an exponential backoff strategy for requests to avoid hitting the limit again.
-*   **Protocol:** The API only responds to HTTPS-secured communications. Any requests sent via HTTP will return an `HTTP 301` redirect.
 
 ## Contact
 Please reach out to *[support@hitpaw.com](mailto:support@hitpaw.com)*. with any questions or for enterprise inquiries.

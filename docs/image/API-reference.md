@@ -19,7 +19,7 @@ All API requests require authentication.
 **Request Body:**
 ```json
 {
-    "model_name": "generative_portrait",
+    "model_name": "general_2x",
     "img_url": "https://i.ibb.co/TDLJLgVR/face-model-before.jpg",
     "extension": ".jpg",
     "exif": true,
@@ -35,7 +35,7 @@ All API requests require authentication.
 | img_url | string | Yes | URL of the image to be enhanced |
 | extension | string | Yes | File extension of the image (e.g., ".jpg", ".png") |
 | exif | boolean | No | Whether to preserve EXIF data (default: false) |
-| DPI | integer | No | Target DPI metadata for the output image (default: 72). **Note: Supported only for non-Generative models.** Does not affect pixel scaling. |
+| DPI | integer | No | Target DPI metadata for the output image (default: original). **Note: Supported only for non-Generative models.** Does not affect pixel scaling. |
 
 **Response:**
 ```json
@@ -62,7 +62,7 @@ curl -X POST https://api-base.hitpaw.com/api/photo-enhancer \
   -H "Content-Type: application/json" \
   -H "Apikey: YOUR_API_KEY" \
   -d '{
-    "model_name": "enhanced_v1",
+    "model_name": "general_2x",
     "img_url": "https://example.com/image.jpg",
     "extension": ".jpg",
     "exif": true,
@@ -83,7 +83,7 @@ headers = {
 }
 
 payload = {
-    "model_name": "enhanced_v1",
+    "model_name": "general_2x",
     "img_url": "https://example.com/image.jpg",
     "extension": ".jpg",
     "exif": True,
@@ -107,7 +107,7 @@ The output resolution of your processed image is directly determined by the `mod
 *   **Resolution Calculation:** `Output Pixels = Input Pixels × Multiplier`.
     *   **2x Models** (e.g., `general_2x`): Doubles both the width and height (e.g., 1000px → 2000px).
     *   **4x Models** (e.g., `general_4x`): Quadruples both the width and height (e.g., 1000px → 4000px).
-    *   **1x Models** (e.g., `sharpen_denoise`): Maintains the original input resolution.
+    *   **1x Models** (e.g., `sharpen_denoise_1x`): Maintains the original input resolution.
 
 *   **About DPI (Dots Per Inch):**
     The `DPI` parameter in the request body is used to set the **print metadata** of the image. 
@@ -121,7 +121,7 @@ The output resolution of your processed image is directly determined by the `mod
 | :--- | :--- | :--- | :--- | :--- |
 | 1024 x 1024 px | `face_2x` | 300 | 2048 x 2048 px | 300 |
 | 1024 x 1024 px | `face_4x` | 72 | 4096 x 4096 px | 72 |
-| 1024 x 1024 px | `detail_denoise` | 300 | 1024 x 1024 px | 300 |
+| 1024 x 1024 px | `detail_denoise_1x` | 300 | 1024 x 1024 px | 300 |
 
 
 ## Available Models
@@ -142,8 +142,8 @@ Use the following values for the `model_name` parameter in your request:
 
 | API `model_name` Category | DPI Support | Max Input Resolution | Max Output Resolution | Supported Formats (In/Out) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Enhancement & Denoise Models**<br />`face_...`, `general_...`, `high_fidelity_...`, `sharpen_denoise`, `detail_denoise` | **Yes** | 67 MP | 600 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif |
-| **Generative Models**<br />`generative_portrait`, `generative` | **No** | No limit | 8K (33 MP) | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif |
+| **Enhancement & Denoise Models**<br />`face_...`, `general_...`, `high_fidelity_...`, `sharpen_denoise    _1x`, `detail_denoise_1x` | **Yes** | 70 MP | 432 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif |
+| **Generative Models**<br />`generative_portrait_...`, `generative_...` | **No** | 34 MP | 34 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif |
 
 > **Note:** The `DPI` parameter is only functional for Enhancement and Denoise models. For all Generative models, this parameter will be ignored.
 
