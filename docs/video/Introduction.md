@@ -35,6 +35,14 @@ Our Video API classifies models based on the restoration approach:
   </video>
 </div>
 
+## MCP Integration
+
+If you want to use HitPaw video enhancement directly from AI clients such as Claude Desktop or Cursor, you can also connect through MCP (Model Context Protocol).
+
+The HitPaw MCP server lets an LLM client choose a video model, submit enhancement tasks, and poll for results using your HitPaw API key.
+
+See [MCP Integration](./MCP.md) for setup instructions and example configuration.
+
 ## Authentication
 
 You will need an API key in order to make requests to this API. Make sure you never share your API key with anyone, and never commit it to a public repository.

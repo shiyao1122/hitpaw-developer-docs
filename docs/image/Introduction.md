@@ -31,6 +31,14 @@ In general, our Image API offers two classes of AI models to suit different need
   <img src={require('./img/comparison-face-model.jpg').default} width="80%" />
 </div>
 
+## MCP Integration
+
+If you want to use HitPaw image enhancement directly from AI clients such as Claude Desktop or Cursor, you can also connect through MCP (Model Context Protocol).
+
+The HitPaw MCP server lets an LLM client choose an image model, submit enhancement tasks, and poll for results using your HitPaw API key.
+
+See [MCP Integration](./MCP.md) for setup instructions and example configuration.
+
 ## Authentication
 
 You will need an API key in order to make requests to this API. Make sure you never share your API key with anyone, and never commit it to a public repository.
