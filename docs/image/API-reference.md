@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 import LLMPageActions from '@site/src/components/LLMPageActions';
 
 # API Documentation
