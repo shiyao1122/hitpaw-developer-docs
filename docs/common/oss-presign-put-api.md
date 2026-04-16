@@ -32,7 +32,7 @@ Apikey: YOUR_API_KEY
 | Field              | Type   | Required | Description                                                                                                                             |
 | ------------------ | ------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | `filename`       | string | Yes      | The filename (including extension), used to infer Content-Type and generate the storage path. Examples:`"photo.jpg"`, `"video.mp4"` |
-| `content_type`   | string | Yes      | Custom Content-Type. If left empty, it will be automatically inferred from the file extension.                                          |
+| `content_type`   | string | Yes      | The Content-Type of the file. Supported values are listed in the [Supported File Types](#supported-file-types) section. |
 | `expire_seconds` | int    | No       | The validity period of the pre-signed URL in seconds. Range: 60-7200. Default: 3600.                                                    |
 
 #### Example Request
@@ -40,7 +40,7 @@ Apikey: YOUR_API_KEY
 ```json
 {
   "filename": "my-photo.jpg",
-  "content_type": "",
+  "content_type": "image/jpeg",
   "expire_seconds": 3600
 }
 ```
@@ -90,7 +90,7 @@ Apikey: YOUR_API_KEY
 | ------------------------ | ------ | -------- | --------------------------------------------------------------------------------- |
 | `files`                | array  | Yes      | A list of files to upload (1-20 items).                                           |
 | `files[].filename`     | string | Yes      | The filename (including extension).                                               |
-| `files[].content_type` | string | Yes      | Custom Content-Type for the specific file.                                        |
+| `files[].content_type` | string | Yes      | The Content-Type of the file. Supported values are listed in the [Supported File Types](#supported-file-types) section. |
 | `expire_seconds`       | int    | No       | A unified validity period for all URLs in seconds. Range: 60-7200. Default: 3600. |
 
 #### Example Request
@@ -98,9 +98,9 @@ Apikey: YOUR_API_KEY
 ```json
 {
   "files": [
-    { "filename": "cover.png" },
+    { "filename": "cover.png", "content_type": "image/png" },
     { "filename": "trailer.mp4", "content_type": "video/mp4" },
-    { "filename": "song.mp3" }
+    { "filename": "song.mp3", "content_type": "audio/mpeg" }
   ],
   "expire_seconds": 1800
 }
