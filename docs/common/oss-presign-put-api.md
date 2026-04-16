@@ -2,7 +2,6 @@
 sidebar_position: 1
 title: OSS Pre-sign Upload
 ---
-
 # OSS Pre-sign Upload API
 
 ## Overview
@@ -30,11 +29,11 @@ Apikey: YOUR_API_KEY
 
 #### Request Body
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `filename` | string | Yes | The filename (including extension), used to infer Content-Type and generate the storage path. Examples: `"photo.jpg"`, `"video.mp4"` |
-| `content_type` | string | No | Custom Content-Type. If left empty, it will be automatically inferred from the file extension. |
-| `expire_seconds` | int | No | The validity period of the pre-signed URL in seconds. Range: 60-7200. Default: 3600. |
+| Field              | Type   | Required | Description                                                                                                                             |
+| ------------------ | ------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `filename`       | string | Yes      | The filename (including extension), used to infer Content-Type and generate the storage path. Examples:`"photo.jpg"`, `"video.mp4"` |
+| `content_type`   | string | Yes      | Custom Content-Type. If left empty, it will be automatically inferred from the file extension.                                          |
+| `expire_seconds` | int    | No       | The validity period of the pre-signed URL in seconds. Range: 60-7200. Default: 3600.                                                    |
 
 #### Example Request
 
@@ -50,13 +49,13 @@ Apikey: YOUR_API_KEY
 
 #### Response Body
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `upload_url` | string | The pre-signed PUT URL. The client must PUT the file content directly to this address. |
-| `access_url` | string | The URL through which the file can be accessed after upload (via CDN or custom domain). |
-| `object_key` | string | The OSS object path. |
-| `content_type` | string | The Content-Type the client **must** set during the PUT request. This must match the actual request header exactly. |
-| `expire_at` | int | The expiration timestamp of the pre-signed URL (Unix timestamp, in seconds). |
+| Field            | Type   | Description                                                                                                              |
+| ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `upload_url`   | string | The pre-signed PUT URL. The client must PUT the file content directly to this address.                                   |
+| `access_url`   | string | The URL through which the file can be accessed after upload (via CDN or custom domain).                                  |
+| `object_key`   | string | The OSS object path.                                                                                                     |
+| `content_type` | string | The Content-Type the client**must** set during the PUT request. This must match the actual request header exactly. |
+| `expire_at`    | int    | The expiration timestamp of the pre-signed URL (Unix timestamp, in seconds).                                             |
 
 #### Example Response
 
@@ -87,12 +86,12 @@ Apikey: YOUR_API_KEY
 
 #### Request Body
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `files` | array | Yes | A list of files to upload (1-20 items). |
-| `files[].filename` | string | Yes | The filename (including extension). |
-| `files[].content_type` | string | No | Custom Content-Type for the specific file. |
-| `expire_seconds` | int | No | A unified validity period for all URLs in seconds. Range: 60-7200. Default: 3600. |
+| Field                    | Type   | Required | Description                                                                       |
+| ------------------------ | ------ | -------- | --------------------------------------------------------------------------------- |
+| `files`                | array  | Yes      | A list of files to upload (1-20 items).                                           |
+| `files[].filename`     | string | Yes      | The filename (including extension).                                               |
+| `files[].content_type` | string | Yes      | Custom Content-Type for the specific file.                                        |
+| `expire_seconds`       | int    | No       | A unified validity period for all URLs in seconds. Range: 60-7200. Default: 3600. |
 
 #### Example Request
 
@@ -111,17 +110,17 @@ Apikey: YOUR_API_KEY
 
 #### Response Body
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `total` | int | Total number of files requested. |
-| `success` | int | Number of successfully generated pre-signed URLs. |
-| `failed` | int | Number of failed generations. |
-| `items` | array | A list of pre-signed results, corresponding 1:1 with the requested `files` array. |
-| `items[].upload_url` | string | The pre-signed PUT URL. |
-| `items[].access_url` | string | The URL through which the file can be accessed after upload. |
-| `items[].object_key` | string | The OSS object path. |
-| `items[].content_type` | string | The Content-Type the client must use during the PUT request. |
-| `items[].expire_at` | int | Expire time (Unix timestamp, in seconds). |
+| Field                    | Type   | Description                                                                         |
+| ------------------------ | ------ | ----------------------------------------------------------------------------------- |
+| `total`                | int    | Total number of files requested.                                                    |
+| `success`              | int    | Number of successfully generated pre-signed URLs.                                   |
+| `failed`               | int    | Number of failed generations.                                                       |
+| `items`                | array  | A list of pre-signed results, corresponding 1:1 with the requested `files` array. |
+| `items[].upload_url`   | string | The pre-signed PUT URL.                                                             |
+| `items[].access_url`   | string | The URL through which the file can be accessed after upload.                        |
+| `items[].object_key`   | string | The OSS object path.                                                                |
+| `items[].content_type` | string | The Content-Type the client must use during the PUT request.                        |
+| `items[].expire_at`    | int    | Expire time (Unix timestamp, in seconds).                                           |
 
 #### Example Response
 
@@ -163,23 +162,23 @@ Apikey: YOUR_API_KEY
 
 ## Supported File Types
 
-| Type | Extension | Content-Type |
-|------|-----------|--------------|
-| Image | `.jpg` / `.jpeg` | `image/jpeg` |
-| Image | `.png` | `image/png` |
-| Image | `.gif` | `image/gif` |
-| Image | `.webp` | `image/webp` |
-| Image | `.bmp` | `image/bmp` |
-| Video | `.mp4` | `video/mp4` |
-| Video | `.mov` | `video/quicktime` |
-| Video | `.avi` | `video/x-msvideo` |
-| Video | `.mkv` | `video/x-matroska` |
-| Video | `.webm` | `video/webm` |
-| Audio | `.mp3` | `audio/mpeg` |
-| Audio | `.wav` | `audio/wav` |
-| Audio | `.aac` | `audio/aac` |
-| Audio | `.m4a` | `audio/mp4` |
-| Document | `.pdf` | `application/pdf` |
+| Type     | Extension            | Content-Type         |
+| -------- | -------------------- | -------------------- |
+| Image    | `.jpg` / `.jpeg` | `image/jpeg`       |
+| Image    | `.png`             | `image/png`        |
+| Image    | `.gif`             | `image/gif`        |
+| Image    | `.webp`            | `image/webp`       |
+| Image    | `.bmp`             | `image/bmp`        |
+| Video    | `.mp4`             | `video/mp4`        |
+| Video    | `.mov`             | `video/quicktime`  |
+| Video    | `.avi`             | `video/x-msvideo`  |
+| Video    | `.mkv`             | `video/x-matroska` |
+| Video    | `.webm`            | `video/webm`       |
+| Audio    | `.mp3`             | `audio/mpeg`       |
+| Audio    | `.wav`             | `audio/wav`        |
+| Audio    | `.aac`             | `audio/aac`        |
+| Audio    | `.m4a`             | `audio/mp4`        |
+| Document | `.pdf`             | `application/pdf`  |
 
 File extensions that are not in the whitelist will return a 400 error.
 
@@ -363,8 +362,8 @@ suspend fun presignUpload(file: File): String {
 
 ## Error Codes
 
-| HTTP Status Code | Description |
-|------------------|-------------|
-| 400 | Parameter error: missing filename, extension not in whitelist, etc. |
-| 401 | Authentication failed |
-| 500 | Server error: OSS client not initialized, signature generation failed, etc. |
+| HTTP Status Code | Description                                                                 |
+| ---------------- | --------------------------------------------------------------------------- |
+| 400              | Parameter error: missing filename, extension not in whitelist, etc.         |
+| 401              | Authentication failed                                                       |
+| 500              | Server error: OSS client not initialized, signature generation failed, etc. |
