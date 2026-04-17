@@ -10,9 +10,9 @@ The pre-sign upload mechanism allows clients (Web, Mobile, Desktop) to upload fi
 
 **Workflow:**
 
-1. The client requests a pre-signed PUT URL from the server.
+1. [Step 1](#step-1-get-pre-signed-upload-url): The client requests a pre-signed PUT URL from the server.
 2. The server responds with an `upload_url` (signed PUT address) and an `access_url` (the public or CDN address to access the file after upload).
-3. The client directly uploads the file body to the `upload_url` using an HTTP PUT request.
+3. [Step 2](#step-2-upload-file-to-oss): The client directly uploads the file body to the `upload_url` using an HTTP PUT request.
 4. Once the upload is complete, the file becomes available via the `access_url`.
 
 ---
@@ -179,14 +179,35 @@ Content-Type: {content_type}
 
 #### Request Body
 
-*   **Binary Data**: The actual file content to be uploaded.
+*   **Binary Data**: The actual file content to be uploaded (the raw byte stream).
+
+#### Example Request
+
+```bash
+# Replace {upload_url} and {content_type} with the values returned in Step 1
+curl -X PUT \
+  -H "Content-Type: image/jpeg" \
+  --data-binary @photo.jpg \
+  "https://bucket.oss-us-west-1.aliyuncs.com/uploads/..."
+```
 
 ### Response
 
 #### Response Status
 
 *   **200 OK**: Upload successful.
-*   **403 Forbidden**: Signature mismatch or expired URL. Usually caused by an incorrect `Content-Type` header.
+*   **403 Forbidden**: Signature mismatch or expired URL. Usually caused by an incorrect `Content-Type` header or the URL exceeding its `expire_seconds`.
+
+#### Example Response
+
+```http
+HTTP/1.1 200 OK
+Content-Length: 0
+Connection: keep-alive
+x-oss-request-id: 56345880014522
+Date: Wed, 25 Mar 2026 12:00:00 GMT
+```
+(Note: A successful OSS PUT response usually contains an empty body.)
 
 ---
 
