@@ -17,7 +17,7 @@ The pre-sign upload mechanism allows clients (Web, Mobile, Desktop) to upload fi
 
 ---
 
-## Endpoint 1: Get Pre-Signed Upload URL
+## Step 1: Get Pre-Signed Upload URL
 
 ### Request
 
@@ -74,7 +74,7 @@ Apikey: YOUR_API_KEY
 
 ---
 
-## Endpoint 2: Batch Get Pre-Signed Upload URLs
+## Step 1 (Batch): Batch Get Pre-Signed Upload URLs
 
 ### Request
 
@@ -160,6 +160,36 @@ Apikey: YOUR_API_KEY
 
 ---
 
+## Step 2: Upload File to OSS
+
+After obtaining the pre-signed URL (Step 1), the client must perform a direct upload to OSS.
+
+### Request
+
+```http
+PUT {upload_url}
+Content-Type: {content_type}
+```
+
+#### Request Headers
+
+| Header         | Type   | Required | Description                                                                                                                             |
+| -------------- | ------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `Content-Type` | string | Yes      | Must strictly match the `content_type` returned in the response from Step 1.                                                            |
+
+#### Request Body
+
+*   **Binary Data**: The actual file content to be uploaded.
+
+### Response
+
+#### Response Status
+
+*   **200 OK**: Upload successful.
+*   **403 Forbidden**: Signature mismatch or expired URL. Usually caused by an incorrect `Content-Type` header.
+
+---
+
 ## Supported File Types
 
 | Type     | Extension            | Content-Type         |
@@ -191,10 +221,9 @@ File extensions that are not in the whitelist will return a 400 error.
 ```bash
 # 1. Get the pre-signed URL
 curl -X POST https://api.example.com/api/oss/presign-put \
-  -H "Content-Type: application/json" \
-  -H "Apikey: YOUR_API_KEY" \
-  -H "Authorization: Bearer <token>" \
-  -d '{"filename": "photo.jpg"}'
+   -H "Content-Type: application/json" \
+   -H "Apikey: YOUR_API_KEY" \
+   -d '{"filename": "photo.jpg", "content_type": "image/jpeg"}'
 
 # 2. Upload the file directly using the returned upload_url (ensure Content-Type strictly matches)
 curl -X PUT \
@@ -211,13 +240,13 @@ const presignResp = await fetch('/api/oss/presign-put', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'Apikey': 'YOUR_API_KEY',
-    'Authorization': 'Bearer ' + token,
-  },
-  body: JSON.stringify({
-    filename: file.name,
-    expire_seconds: 3600,
-  }),
+     'Apikey': 'YOUR_API_KEY',
+   },
+   body: JSON.stringify({
+     filename: file.name,
+     content_type: file.type,
+     expire_seconds: 3600,
+   }),
 });
 const { data } = await presignResp.json();
 
@@ -243,11 +272,10 @@ async function uploadWithProgress(file, onProgress) {
   const presignResp = await fetch('/api/oss/presign-put', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      'Apikey': 'YOUR_API_KEY',
-      'Authorization': 'Bearer ' + token,
-    },
-    body: JSON.stringify({ filename: file.name }),
+       'Content-Type': 'application/json',
+       'Apikey': 'YOUR_API_KEY',
+     },
+     body: JSON.stringify({ filename: file.name, content_type: file.type }),
   });
   const { data } = await presignResp.json();
 
@@ -292,11 +320,11 @@ func presignUpload(file: Data, filename: String) async throws -> String {
     var presignReq = URLRequest(url: URL(string: "\(baseURL)/api/oss/presign-put")!)
     presignReq.httpMethod = "POST"
     presignReq.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    presignReq.setValue("YOUR_API_KEY", forHTTPHeaderField: "Apikey")
-    presignReq.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-    presignReq.httpBody = try JSONEncoder().encode([
-        "filename": filename
-    ])
+     presignReq.setValue("YOUR_API_KEY", forHTTPHeaderField: "Apikey")
+     presignReq.httpBody = try JSONEncoder().encode([
+         "filename": filename,
+         "content_type": "image/jpeg"
+     ])
 
     let (data, _) = try await URLSession.shared.data(for: presignReq)
     let resp = try JSONDecoder().decode(PresignResponse.self, from: data)
@@ -324,15 +352,14 @@ suspend fun presignUpload(file: File): String {
     val client = OkHttpClient()
 
     // 1. Get the pre-signed URL
-    val presignBody = """{"filename": "${file.name}"}"""
-        .toRequestBody("application/json".toMediaType())
+     val presignBody = """{"filename": "${file.name}", "content_type": "image/jpeg"}"""
+         .toRequestBody("application/json".toMediaType())
 
     val presignReq = Request.Builder()
-        .url("$baseUrl/api/oss/presign-put")
-        .header("Apikey", "YOUR_API_KEY")
-        .header("Authorization", "Bearer $token")
-        .post(presignBody)
-        .build()
+         .url("$baseUrl/api/oss/presign-put")
+         .header("Apikey", "YOUR_API_KEY")
+         .post(presignBody)
+         .build()
 
     val presignResp = client.newCall(presignReq).await()
     val data = JSONObject(presignResp.body!!.string())
