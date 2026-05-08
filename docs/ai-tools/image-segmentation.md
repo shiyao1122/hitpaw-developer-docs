@@ -1,9 +1,18 @@
 ---
 sidebar_position: 1
+title: Image Segmentation
 description: API reference for HitPaw Image Segmentation. Automatically recognize and extract the main subject of an image.
 ---
 
+import LLMPageActions from '@site/src/components/LLMPageActions';
+
 # Image Segmentation API
+
+<LLMPageActions
+  llmsPath="/ai-tools/image-segmentation/llms.txt"
+  pageTitle="HitPaw Image Segmentation API"
+  publicPageUrl="https://developer.hitpaw.com/ai-tools/image-segmentation"
+/>
 
 ## Base URL
 ```
@@ -225,3 +234,7 @@ if __name__ == "__main__":
 2. **Access Rights**: Ensure your `file_url` inputs can be publicly accessed for our servers to securely fetch them.
 3. **Validity Length**: A `job_id` and the returned output media files will only be valid and retrievable for 8 days after completion.
 4. **Polling Intervals**: After submitting a job, interval status polls using the `/task-status` endpoint at a ~2-5s cadence for the quickest real-time response capture.
+
+:::tip Ready to Start?
+Get started by [Purchasing an API Key Now](https://www.hitpaw.com/hitpaw-api.html) to unlock full access to the HitPaw Enhancement API.
+:::

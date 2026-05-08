@@ -1,16 +1,17 @@
 ---
-sidebar_position: 3
-description: Comprehensive API reference for HitPaw Video Enhancement, including endpoints for video enhancement and task status queries.
+sidebar_position: 1
+title: Image Enhancement
+description: Comprehensive API reference for HitPaw Image Enhancement, including endpoints for photo enhancement and task status queries.
 ---
 
 import LLMPageActions from '@site/src/components/LLMPageActions';
 
-# API Documentation
+# Image Enhancement API
 
 <LLMPageActions
-  llmsPath="/video/API-reference/llms.txt"
-  pageTitle="HitPaw Video API Reference"
-  publicPageUrl="https://developer.hitpaw.com/video/API-reference"
+  llmsPath="/image/API-reference/llms.txt"
+  pageTitle="HitPaw Image API Reference"
+  publicPageUrl="https://developer.hitpaw.com/image/API-reference"
 />
 
 ## Base URL
@@ -25,18 +26,18 @@ All API requests require authentication.
 
 ## Endpoints
 
-**Endpoint:** `POST /api/video-enhancer`
+**Endpoint:** `POST /api/photo-enhancer`
 
-**Description:** Submit a video enhancement task for video super-resolution processing.
+**Description:** Submit a photo enhancement task for image super-resolution processing.
 
 **Request Body:**
 ```json
 {
-  "video_url": "string",
-  "model_name": "string",
-  "resolution": [1920, 1080],
-  "extension": "string",
-  "original_resolution": [1280, 720]
+    "model_name": "general_2x",
+    "img_url": "https://i.ibb.co/TDLJLgVR/face-model-before.jpg",
+    "extension": ".jpg",
+    "exif": true,
+    "DPI": 300
 }
 ```
 
@@ -44,14 +45,14 @@ All API requests require authentication.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| video_url | string | Yes | URL of the video to be enhanced |
-| model_name | string | Yes | Model name to use for enhancement |
-| resolution | array[integer] | Yes | Target resolution [width, height] |
-| extension | string | No | File extension (default: ".mp4") |
-| original_resolution | array[integer] | No | Original video resolution [width, height] |
+| model_name | string | Yes | The model name to use. The suffix (2x/4x) determines the output resolution. |
+| img_url | string | Yes | URL of the image to be enhanced |
+| extension | string | Yes | File extension of the image (e.g., ".jpg", ".png") |
+| exif | boolean | No | Whether to preserve EXIF data (default: false) |
+| DPI | integer | No | Target DPI metadata for the output image (default: original). **Note: Supported only for non-Generative models.** Does not affect pixel scaling. |
 
 :::tip Use Pre-sign Upload for Better Reliability
-If you encounter download failures or network instability when our servers attempt to fetch your resources via `video_url`, we highly recommend using our [OSS Pre-sign Upload API](../common/oss-presign-put-api.md) to securely upload your files first. Provide the generated `access_url` as your `video_url` to guarantee a 100% success rate for resource retrieval.
+If you encounter download failures or network instability when our servers attempt to fetch your resources via `img_url`, we highly recommend using our [OSS Pre-sign Upload API](../common/oss-storage.md) to securely upload your files first. Provide the generated `access_url` as your `img_url` to guarantee a 100% success rate for resource retrieval.
 :::
 
 **Response:**
@@ -75,15 +76,15 @@ If you encounter download failures or network instability when our servers attem
 
 **Example Request (cURL):**
 ```bash
-curl -X POST https://api-base.hitpaw.com/api/video-enhancer \
+curl -X POST https://api-base.hitpaw.com/api/photo-enhancer \
   -H "Content-Type: application/json" \
   -H "Apikey: YOUR_API_KEY" \
   -d '{
-    "video_url": "https://example.com/video.mp4",
-    "model_name": "video_enhance_v2",
-    "resolution": [1920, 1080],
-    "extension": ".mp4",
-    "original_resolution": [1280, 720]
+    "model_name": "general_2x",
+    "img_url": "https://example.com/image.jpg",
+    "extension": ".jpg",
+    "exif": true,
+    "DPI": 300
   }'
 ```
 
@@ -92,7 +93,7 @@ curl -X POST https://api-base.hitpaw.com/api/video-enhancer \
 import requests
 import json
 
-url = "https://api-base.hitpaw.com/api/video-enhancer"
+url = "https://api-base.hitpaw.com/api/photo-enhancer"
 
 headers = {
     "Content-Type": "application/json",
@@ -100,11 +101,11 @@ headers = {
 }
 
 payload = {
-    "video_url": "https://example.com/video.mp4",
-    "model_name": "video_enhance_v2",
-    "resolution": [1920, 1080],
-    "extension": ".mp4",
-    "original_resolution": [1280, 720]
+    "model_name": "general_2x",
+    "img_url": "https://example.com/image.jpg",
+    "extension": ".jpg",
+    "exif": True,
+    "DPI": 300
 }
 
 response = requests.post(url, headers=headers, data=json.dumps(payload))
@@ -117,23 +118,52 @@ else:
     print(f"Error: {response.status_code}")
     print(response.text)
 ```
+## Output Resolution Control
+
+The output resolution of your processed image is directly determined by the `model_name` you select. The multiplier suffix (e.g., `2x`, `4x`) indicates how much the image dimensions will be scaled.
+
+*   **Resolution Calculation:** `Output Pixels = Input Pixels × Multiplier`.
+    *   **2x Models** (e.g., `general_2x`): Doubles both the width and height (e.g., 1000px → 2000px).
+    *   **4x Models** (e.g., `general_4x`): Quadruples both the width and height (e.g., 1000px → 4000px).
+    *   **1x Models** (e.g., `sharpen_denoise_1x`): Maintains the original input resolution.
+
+*   **About DPI (Dots Per Inch):**
+    The `DPI` parameter in the request body is used to set the **print metadata** of the image. 
+    *   Changing the DPI value **does not** change the digital pixel count or the resolution of the image. 
+    *   It only affects how the image is scaled when printed on physical paper. 
+    *   For digital display, the image quality and size are solely controlled by the **2x/4x** model selection.
+
+**Example Scenarios:**
+
+| Input Resolution | Selected Model | Target DPI | Output Resolution | Metadata DPI |
+| :--- | :--- | :--- | :--- | :--- |
+| 1024 x 1024 px | `face_2x` | 300 | 2048 x 2048 px | 300 |
+| 1024 x 1024 px | `face_4x` | 72 | 4096 x 4096 px | 72 |
+| 1024 x 1024 px | `detail_denoise_1x` | 300 | 1024 x 1024 px | 300 |
+
 
 ## Available Models
-Use the following values for the `model_name` parameter:
+Use the following values for the `model_name` parameter in your request:
 
 | Display Name | API `model_name` Value |
 | :--- | :--- |
-| Face Soft Model 2x | `face_soft_2x` |
-| Portrait Restore Model 1x/2x | `portrait_restore_1x` / `portrait_restore_2x` |
-| General Restore Model 1x/2x/4x | `general_restore_1x` / `general_restore_2x` / `general_restore_4x` |
-| Ultra HD Model 2x | `ultrahd_restore_2x` |
-| Generative Model 1x | `generative_1x` |
+| Face Clear Model 2x/4x | `face_2x`/`face_4x` |
+| Face Natural Model 2x/4x | `face_v2_2x`/`face_v2_4x` |
+| General Enhance Model 2x/4x | `general_2x`/`general_4x` |
+| High Fidelity Model 2x/4x | `high_fidelity_2x`/`high_fidelity_4x` |
+| Sharp Denoise Model 1x | `sharpen_denoise_1x` |
+| Detail Denoise Model 1x | `detail_denoise_1x` |
+| Generative Portrait Model 1x/2x/4x | `generative_portrait_1x`/`generative_portrait_2x`/`generative_portrait_4x` |
+| Generative Enhance Model 1x/2x/4x/6x/8x | `generative_1x`/`generative_2x`/`generative_4x`/`generative_6x`/`generative_8x` |
 
 ## Model Specifications
 
-| API `model_name` | Supported Input Formats | Max Input Resolution | Supported Output Formats | Max Output Resolution | Duration |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **All Video Models** | dv,mlv,m2ts,m2t,m2v,nut,ser,3g2,3gp,asf,avi,divx,f4v,flv,h261,h263,m4v,mkv,mov,mp4,mpeg,mpeg4,mpg,mxf,ogv,rm,rmvb,webm,wmv,3gp2,dmsm,dvdmedia,dvr-ms,trp,vob,vro,gif,xvid | No limit | mp4, mov, mkv, m4v, avi, gif | 36 MP (Total Pixels) | 0.5s to 1 hour |
+| API `model_name` Category | DPI Support | Max Input Resolution | Max Output Resolution | Supported Formats (In/Out) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Enhancement & Denoise Models**<br />`face_...`, `general_...`, `high_fidelity_...`, `sharpen_denoise    _1x`, `detail_denoise_1x` | **Yes** | 70 MP | 432 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif |
+| **Generative Models**<br />`generative_portrait_...`, `generative_...` | **No** | 34 MP | 34 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif |
+
+> **Note:** The `DPI` parameter is only functional for Enhancement and Denoise models. For all Generative models, this parameter will be ignored.
 
 ## Task Status
 
@@ -161,9 +191,9 @@ Use the following values for the `model_name` parameter:
     "message": "OK",
     "data": {
         "job_id": "string",
-    "status": "string",
-    "res_url": "string",
-    "original_url": "string"
+        "status": "string",
+        "res_url": "string",
+        "original_url": "string"
     }
 }
 ```
@@ -246,8 +276,6 @@ while attempt < max_attempts:
 if attempt >= max_attempts:
     print("Max polling attempts reached")
 ```
-
----
 
 ## Error Codes
 
@@ -335,7 +363,6 @@ The API uses the following error codes:
    - Use HTTPS URLs for better security
    - Verify URLs are valid before submitting requests
 
-
 ## Complete Workflow Example (Python)
 
 Here's a complete example showing the entire workflow from submission to result retrieval:
@@ -354,19 +381,16 @@ class HitPawAPIClient:
             "Apikey": api_key
         }
     
-    def enhance_video(self, video_url, model_name, resolution, extension=".mp4", 
-                     original_resolution=None):
-        """Submit a video enhancement job"""
-        url = f"{self.base_url}/api/video-enhancer"
+    def enhance_photo(self, img_url, model_name="enhanced_v1", extension=".jpg", exif=True, dpi=300):
+        """Submit a photo enhancement job"""
+        url = f"{self.base_url}/api/photo-enhancer"
         payload = {
-            "video_url": video_url,
             "model_name": model_name,
-            "resolution": resolution,
-            "extension": extension
+            "img_url": img_url,
+            "extension": extension,
+            "exif": exif,
+            "DPI": dpi
         }
-        
-        if original_resolution:
-            payload["original_resolution"] = original_resolution
         
         response = requests.post(url, headers=self.headers, data=json.dumps(payload))
         
@@ -374,6 +398,7 @@ class HitPawAPIClient:
             return response.json()
         else:
             raise Exception(f"Error {response.status_code}: {response.text}")
+    
     
     def check_status(self, job_id):
         """Check job status"""
@@ -420,21 +445,20 @@ if __name__ == "__main__":
     client = HitPawAPIClient(api_key="YOUR_API_KEY")
     
     try:
-
-        # Example : Video Enhancement
-        print("=== Video Enhancement ===")
-        video_result = client.enhance_video(
-            video_url="https://example.com/video.mp4",
-            model_name="video_enhance_v2",
-            resolution=[1920, 1080],
-            original_resolution=[1280, 720]
+        # Example 1: Photo Enhancement
+        print("=== Photo Enhancement ===")
+        photo_result = client.enhance_photo(
+            img_url="https://example.com/photo.jpg",
+            model_name="enhanced_v1",
+            extension=".jpg"
         )
-        print(f"Job ID: {video_result['job_id']}")
-        print(f"Coins consumed: {video_result['consume_coins']}")
+        print(f"Job ID: {photo_result['job_id']}")
+        print(f"Coins consumed: {photo_result['consume_coins']}")
         
         # Wait for completion
-        final_result = client.wait_for_completion(video_result['job_id'])
+        final_result = client.wait_for_completion(photo_result['job_id'])
         print(f"Result URL: {final_result['res_url']}")
+        
         
     except Exception as e:
         print(f"Error: {str(e)}")

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 6
+sidebar_position: 5
 title: Benchmark Overview
 ---
 
@@ -7,7 +7,7 @@ title: Benchmark Overview
 
 This page summarizes representative benchmark results for the HitPaw Image Enhancement API. It is intended as a technical reference for developers who want to understand where different model families perform best.
 
-For endpoint details and request examples, see the [API Reference](./API-reference.md). For model behavior and visual examples, see [Available Models](./available-models.md).
+For endpoint details and request examples, see the [API Reference](../enhance/image-enhancement.md). For model behavior and visual examples, see [Available Models](./available-models.md).
 
 ## What This Page Covers
 
@@ -90,19 +90,19 @@ Best for evaluating architectural detail, repeated structures, and line stabilit
 
 Focus: reconstructing complex textures under 4x upscaling.
 
-![DIV2K 4x](./img/DIV2K_4x.png)
+![DIV2K 4x](./asset/DIV2K_4x.png)
 
 ### RealSR: Real-World Noise Processing
 
 Focus: handling real-world noise and restoration artifacts.
 
-![RealSR 1x](./img/RealSR(V3)_1x.png)
+![RealSR 1x](./asset/RealSR(V3)_1x.png)
 
 ### Urban100: Structural Integrity
 
 Focus: preserving straight lines and architectural structure.
 
-![Urban100 2x](./img/Urban100_2x.png)
+![Urban100 2x](./asset/Urban100_2x.png)
 
 ## Model Selection Guidance
 

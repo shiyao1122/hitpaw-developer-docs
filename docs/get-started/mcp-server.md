@@ -1,11 +1,11 @@
 ---
-sidebar_position: 4
+sidebar_position: 6
 title: MCP Integration
 ---
 
 # MCP Integration
 
-HitPaw now provides an MCP (Model Context Protocol) server for image and video enhancement workflows. This page focuses on the **image** side of the MCP integration.
+HitPaw provides an MCP (Model Context Protocol) server for image enhancement, video enhancement, and image segmentation workflows.
 
 This allows LLM clients such as Claude Desktop and Cursor to call HitPaw tools directly instead of integrating the REST API by hand.
 
@@ -16,32 +16,42 @@ Repository:
 
 With the HitPaw MCP server, an LLM client can:
 
-- select a suitable image model based on the input content
-- submit an image enhancement task
+- select a suitable image or video model based on the input content
+- submit an enhancement or segmentation task
 - check task status and fetch the result URL
-- transfer remote files to OSS before processing
-- list available image models and their recommended use cases
+- transfer remote files to OSS before processing (OSS pre-upload)
+- list available models and their recommended use cases
 
-The MCP server also supports video enhancement. See the video documentation section for the video-specific workflow.
+## Supported Tools
 
-## Supported Image Tools
+The current MCP workflow is built around these tools:
 
-The current image MCP workflow is built around these tools:
-
+### AI Processing Tools
 | Tool | Purpose |
 | :--- | :--- |
 | `photo_enhance` | Submit an image enhancement or super-resolution task |
+| `video_enhance` | Submit a video enhancement or super-resolution task |
+| `image_segmentation` | Submit an image segmentation or background removal task |
+
+### OSS Tools
+| Tool | Purpose |
+| :--- | :--- |
+| `oss_transfer` | Transfer a single remote file to OSS and get a stable URL (OSS pre-upload) |
+| `oss_batch_transfer` | Transfer multiple remote files to OSS (OSS batch pre-upload) |
+
+### Common Tools
+| Tool | Purpose |
+| :--- | :--- |
 | `task_status` | Query task progress and retrieve the result URL |
-| `oss_transfer` | Transfer a remote file to OSS and get a stable URL |
-| `oss_batch_transfer` | Transfer multiple remote files to OSS |
 | `list_photo_models` | List image enhancement models and usage guidance |
+| `list_video_models` | List video enhancement models and supported scenarios |
 
 ## Why Use MCP Instead of Calling the API Directly
 
 Use MCP when you want an LLM client to orchestrate the workflow for you.
 
 - It reduces integration work for prompt-driven workflows.
-- It lets Claude or Cursor choose a model based on the image type.
+- It lets Claude or Cursor choose a model based on the content type.
 - It keeps the enhancement flow inside the AI client your team already uses.
 
 Use the REST API directly when you are building a product-side integration, backend service, or custom application logic.
@@ -124,17 +134,20 @@ Edit `~/.cursor/mcp.json`:
 
 Typical prompt flow:
 
-1. The user shares an image URL with Claude or Cursor.
-2. The client calls `list_photo_models` to determine the best model.
-3. The client calls `photo_enhance` with the selected model.
+1. The user shares a media URL with Claude or Cursor.
+2. The client calls `list_photo_models` or `list_video_models` to determine the best model.
+3. The client calls the appropriate enhancement or segmentation tool with the selected model.
 4. The client calls `task_status` until the result is ready.
-5. The client returns the enhanced image URL.
+5. The client returns the enhanced media URL.
 
 Example request in natural language:
 
 ```text
 Please enhance this image and preserve natural facial texture:
 https://example.com/photo.jpg
+
+Or segment the main subject in this image:
+https://example.com/subject.png
 ```
 
 ## Environment Variables
@@ -148,20 +161,20 @@ https://example.com/photo.jpg
 
 MCP is a good fit when:
 
-- you want to trigger image enhancement from Claude or Cursor
+- you want to trigger media enhancement or segmentation from Claude or Cursor
 - your workflow is prompt-first rather than app-first
 - you want model selection and task polling handled by the AI client
 
-If you are integrating HitPaw into your own product or backend, start with the [API Reference](./API-reference.md) instead.
+If you are integrating HitPaw into your own product or backend, start with the [Image API Reference](../enhance/image-enhancement.md) or [Video API Reference](../enhance/video-enhancement.md) instead.
 
 ## Related Links
 
-- [Image API Reference](./API-reference.md)
+- [Image API Reference](../enhance/image-enhancement.md)
+- [Video API Reference](../enhance/video-enhancement.md)
+- [Image Segmentation](../ai-tools/image-segmentation.md)
 - [Available Models](./available-models.md)
-- [Video MCP Integration](../video/MCP.md)
 - [HitPaw MCP Server on GitHub](https://github.com/HitPaw-Official/hitpaw-mcp-server)
 
 :::tip Ready to Start?
 Get started by [Purchasing an API Key Now](https://www.hitpaw.com/hitpaw-api.html) to unlock full access to the HitPaw Enhancement API.
 :::
-

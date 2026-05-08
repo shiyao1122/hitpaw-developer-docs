@@ -34,6 +34,13 @@ const config: Config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
+  headTags: [
+    {
+      tagName: 'script',
+      innerHTML: 'window.gtag = window.gtag || function(){};',
+      attributes: {},
+    },
+  ],
   stylesheets: [
     // 引入 Montserrat 字体（包含常规、中等、粗体）
     'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap',

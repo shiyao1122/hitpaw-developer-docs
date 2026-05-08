@@ -1,7 +1,4 @@
 {
-    "label": "AI Tools",
-    "position": 5,
-    "link": {
-        "type": "generated-index"
-    }
+  "label": "Other AI Tools API",
+  "position": 3
 }
