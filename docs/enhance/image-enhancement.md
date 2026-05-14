@@ -155,13 +155,14 @@ Use the following values for the `model_name` parameter in your request:
 | Detail Denoise Model 1x | `detail_denoise_1x` |
 | Generative Portrait Model 1x/2x/4x | `generative_portrait_1x`/`generative_portrait_2x`/`generative_portrait_4x` |
 | Generative Enhance Model 1x/2x/4x/6x/8x | `generative_1x`/`generative_2x`/`generative_4x`/`generative_6x`/`generative_8x` |
+| Generative Enhance Fast Model 2x/4x | `generative_enhance_fast_model_2x`/`generative_enhance_fast_model_4x` |
 
 ## Model Specifications
 
 | API `model_name` Category | DPI Support | Max Input Resolution | Max Output Resolution | Supported Formats (In/Out) |
 | :--- | :--- | :--- | :--- | :--- |
 | **Enhancement & Denoise Models**<br />`face_...`, `general_...`, `high_fidelity_...`, `sharpen_denoise    _1x`, `detail_denoise_1x` | **Yes** | 70 MP | 432 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif |
-| **Generative Models**<br />`generative_portrait_...`, `generative_...` | **No** | 34 MP | 34 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif |
+| **Generative Models**<br />`generative_portrait_...`, `generative_...`, `generative_enhance_fast_model_...` | **No** | 34 MP | 34 MP | bmp, jpeg, jpg, png, jfif, tga, tiff, webp, heif |
 
 > **Note:** The `DPI` parameter is only functional for Enhancement and Denoise models. For all Generative models, this parameter will be ignored.
 
