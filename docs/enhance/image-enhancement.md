@@ -24,6 +24,11 @@ All API requests require authentication.
 *   **Don't have an API key?** Get started by [Purchasing an API Key Now](https://www.hitpaw.com/hitpaw-api.html).
 *   **Already have your API Key?** Skip the local setup and test the API directly in your browser. [Explore Playground →](https://playground.hitpaw.com/)
 
+## Billing & Credits
+HitPaw API uses a credit-based billing system.
+* **Credits per Task:** Image enhancement is billed per image, determined by the selected model category and output resolution tier.
+* For detailed rates, please refer to the [API Pricing Guide](../get-started/pricing.md).
+
 ## Endpoints
 
 **Endpoint:** `POST /api/photo-enhancer`
@@ -72,7 +77,7 @@ If you encounter download failures or network instability when our servers attem
 | Field | Type | Description |
 |-------|------|-------------|
 | job_id | string | Unique identifier for the enhancement job |
-| consume_coins | integer | Number of coins consumed for this task |
+| consume_coins | integer | Number of credits (coins) consumed for this task |
 
 **Example Request (cURL):**
 ```bash
@@ -470,6 +475,6 @@ if __name__ == "__main__":
 For API key requests, billing questions, or technical support, please contact our support team.
 
 :::tip Ready to Start?
-Get started by [Purchasing an API Key Now](https://www.hitpaw.com/hitpaw-api.html) to unlock full access to the HitPaw Enhancement API.
+Get started by [Purchasing an API Key Now](https://www.hitpaw.com/hitpaw-api.html) to unlock full access to the HitPaw API.
 :::
 

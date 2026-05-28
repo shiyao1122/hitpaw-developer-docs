@@ -23,6 +23,11 @@ https://api-base.hitpaw.com
 All API requests require authentication. 
 *   **Don't have an API key?** Get started by [Purchasing an API Key Now](https://www.hitpaw.com/hitpaw-api.html).
 
+## Billing & Credits
+HitPaw API uses a credit-based billing system.
+* **Credits per Task:** Each image segmentation task consumes **20 credits**, regardless of the image resolution.
+* For more details, refer to the [API Pricing Guide](../get-started/pricing.md).
+
 ## Endpoints
 
 ### Initialize Task
@@ -61,7 +66,7 @@ All API requests require authentication.
 | Field | Type | Description |
 |-------|------|-------------|
 | job_id | string | Unique identifier for the segmentation job |
-| consume_coins | integer | Number of coins consumed for this task |
+| consume_coins | integer | Number of credits (coins) consumed for this task (20 credits) |
 
 **Example Request (cURL):**
 ```bash
@@ -236,5 +241,5 @@ if __name__ == "__main__":
 4. **Polling Intervals**: After submitting a job, interval status polls using the `/task-status` endpoint at a ~2-5s cadence for the quickest real-time response capture.
 
 :::tip Ready to Start?
-Get started by [Purchasing an API Key Now](https://www.hitpaw.com/hitpaw-api.html) to unlock full access to the HitPaw Enhancement API.
+Get started by [Purchasing an API Key Now](https://www.hitpaw.com/hitpaw-api.html) to unlock full access to the HitPaw API.
 :::
