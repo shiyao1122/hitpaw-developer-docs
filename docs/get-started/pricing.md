@@ -5,7 +5,7 @@ title: Pricing
 
 # API Pricing
 
-HitPaw API is a credit-based system. Our professional APIs—Video Enhancement, Image Enhancement, and Image Segmentation—are billed based on the media processing load or a flat rate per task.
+HitPaw API is a credit-based system. Our professional APIs—Video Enhancement, Image Enhancement, Image Segmentation, and Image Moderation—are billed based on the media processing load or a flat rate per task.
 
 ## 1. Video Enhancement Pricing
 
@@ -125,13 +125,14 @@ Generative models are priced based on the creative reconstruction level and outp
 | **Gen Extreme HD** | 12 - 24 MP | 5K / 6K | **80** | $0.08 |
 | **Gen Cinema** | 24 - 34 MP | 8K | **150** | $0.15 |
 
-## 3. Image Segmentation Pricing
+## 3. Other AI Tools Pricing
 
-Image segmentation (matting) is billed **per image** at a flat rate, regardless of the output resolution.
+These AI tools are billed **per image** at a flat rate, regardless of the output resolution.
 
 | Service | Credits (per image) | Price (USD/image) |
 | :--- | :--- | :--- |
 | **Image Segmentation** | **20** | $0.02 |
+| **Image Moderation** | **5** | $0.005 |
 
 :::tip Ready to Start?
 Get started by [Purchasing an API Key Now](https://www.hitpaw.com/hitpaw-api.html) to unlock full access to the HitPaw API.
