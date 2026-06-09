@@ -11,7 +11,7 @@ This guide will help you integrate the HitPaw Enhancement API into your workflow
 
 You will need an API key in order to make requests to this API. Make sure you never share your API key with anyone, and never commit it to a public repository.
 
-Once you have your API key, set it as the `APIKEY` header of your HTTP requests.
+Once you have your API key, set it as the `Apikey` header of your HTTP requests.
 
 *   **Don't have an API key?** Get started by [Purchasing an API Key Now](https://www.hitpaw.com/hitpaw-api.html).
 *   **Already have your API Key?** Skip the local setup and test the API directly in your browser. [Explore Playground →](https://playground.hitpaw.com/)
@@ -19,12 +19,15 @@ Once you have your API key, set it as the `APIKEY` header of your HTTP requests.
 ### Example Request
 
 ```bash
-curl -X POST "https://api-base.hitpaw.com/v1/video/enhance" \
-  -H "APIKEY: your_api_key_here" \
+curl -X POST "https://api-base.hitpaw.com/api/video-enhancer" \
+  -H "Apikey: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "video_url": "https://example.com/video.mp4",
-    "model": "ultra_hd"
+    "model_name": "general_restore_2x",
+    "resolution": [1920, 1080],
+    "extension": ".mp4",
+    "original_resolution": [1280, 720]
   }'
 ```
 
