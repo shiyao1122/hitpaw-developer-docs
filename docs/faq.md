@@ -151,7 +151,7 @@ This guide provides answers to frequently asked questions and troubleshooting st
 <details>
   <summary><b>Q: How long are the enhanced files stored on HitPaw servers?</b></summary>
   <div>
-    <p>For privacy and resource efficiency, all processed output files (available via <code>res_url</code>) are automatically deleted after <b>8 days</b>. You must download and persist these files to your own storage provider before they expire.</p>
+    <p>For privacy and resource efficiency, all processed output files (available via <code>res_url</code>) are automatically deleted after <b>7 days</b>. You must download and persist these files to your own storage provider before they expire.</p>
   </div>
 </details>
 
