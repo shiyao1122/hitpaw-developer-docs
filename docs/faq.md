@@ -37,14 +37,6 @@ import Head from '@docusaurus/Head';
         },
         {
           "@type": "Question",
-          "name": "How should I pass my API key in requests?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Pass your API key as a custom header named 'Apikey' in all HTTP requests."
-          }
-        },
-        {
-          "@type": "Question",
           "name": "What are the API rate limits?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -154,15 +146,6 @@ This guide provides answers to frequently asked questions and troubleshooting st
   <summary><b>Q: Where do I find or create my API key?</b></summary>
   <div>
     <p>You can manage and create your API keys on the <a href="https://platform.hitpaw.com/">HitPaw API Platform</a>. Once logged in, go to the API Keys section to generate a new key or copy your existing key.</p>
-  </div>
-</details>
-
-<details>
-  <summary><b>Q: How should I pass my API key in requests?</b></summary>
-  <div>
-    <p>You must pass your API key as a custom header named <code>Apikey</code> in all HTTP requests. For example:</p>
-    <pre><code>Apikey: YOUR_API_KEY_HERE</code></pre>
-    <p>Do not pass the key as a query parameter or inside the request body.</p>
   </div>
 </details>
 
