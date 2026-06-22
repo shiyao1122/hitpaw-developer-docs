@@ -10,6 +10,8 @@ All API requests require authentication.
 
 - Don't have an API key? Get started by purchasing and managing keys on the HitPaw API Platform:
   https://platform.hitpaw.com/
+- Need help or troubleshooting? Check our FAQ:
+  https://developer.hitpaw.com/faq
 
 ## Billing & Credits
 HitPaw API uses a credit-based billing system.

@@ -12,6 +12,8 @@ All API requests require authentication.
   https://platform.hitpaw.com/
 - Already have your API key? Test the API directly in the browser:
   https://playground.hitpaw.com/
+- Need help or troubleshooting? Check our FAQ:
+  https://developer.hitpaw.com/faq
 
 ## Endpoint: POST /api/photo-enhancer
 Submit a photo enhancement task for image super-resolution processing.
