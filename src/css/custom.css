@@ -50,3 +50,40 @@ h6:hover .hash-link {
   visibility: hidden !important;
   display: none !important;
 }
+
+/* 自定义 FAQ 中 <details> 标签的样式，使其匹配项目主题色 */
+.markdown details {
+  background-color: var(--ifm-color-secondary-contrast-background);
+  border: 1px solid var(--ifm-color-secondary-contrast-border);
+  border-radius: var(--ifm-global-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: border-color var(--ifm-transition-fast) ease, box-shadow var(--ifm-transition-fast) ease;
+}
+
+.markdown details[open] {
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 0 8px rgba(130, 63, 255, 0.15); /* 使用 primary color 匹配的光晕 */
+}
+
+.markdown details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ifm-color-content);
+  transition: color var(--ifm-transition-fast) ease;
+  margin: -1rem;
+  padding: 1rem;
+}
+
+.markdown details summary::marker {
+  color: var(--ifm-color-primary);
+}
+
+.markdown details summary:hover {
+  color: var(--ifm-color-primary);
+}
+
+.markdown details div {
+  margin-top: 1.5rem;
+  color: var(--ifm-color-content-secondary);
+}
