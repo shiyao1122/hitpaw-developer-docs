@@ -102,6 +102,15 @@ const config: Config = {
   //注册插件
   plugins: [
     'docusaurus-plugin-image-zoom',
+    [
+      '@easyops-cn/docusaurus-search-local',
+      {
+        hashed: true,
+        language: ['en'],
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+      },
+    ],
   ],
 
   themeConfig: {
