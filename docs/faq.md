@@ -119,6 +119,20 @@ This guide provides answers to frequently asked questions and troubleshooting st
   </div>
 </details>
 
+<details>
+  <summary><b>Q: Why do my ultra-high-resolution output videos (e.g., 7.5K) stutter when playing in QuickTime or PotPlayer?</b></summary>
+  <div>
+    <p>This is a hardware decoding limitation of standard media players, not a corrupted video or an algorithm issue.</p>
+    <p>HitPaw defaults to the <b>H.264</b> video codec because it provides the best global compatibility. However, H.264 hardware decoding on most consumer graphics cards is capped at <b>4K resolution</b> (specifically H.264 Level 5.1/5.2, 4096×2304).</p>
+    <p>When you enhance a video to an extreme resolution (like 7.5K) using the <i>General Restore</i> or <i>Ultra HD</i> models, the output resolution exceeds this hardware limit. Default players like Mac QuickTime and Windows PotPlayer (with default settings) cannot use GPU hardware acceleration and must rely purely on CPU software decoding, causing severe stuttering.</p>
+    <p><b>Temporary Solution:</b> To play these ultra-high-resolution videos smoothly, please use professional media players optimized for efficient software decoding, such as:</p>
+    <ul>
+      <li><b>Windows:</b> <a href="https://www.videolan.org/vlc/" target="_blank">VLC Media Player</a></li>
+      <li><b>macOS:</b> <a href="https://iina.io/" target="_blank">IINA</a></li>
+    </ul>
+  </div>
+</details>
+
 ---
 
 ## 4. Task Status & Webhooks
