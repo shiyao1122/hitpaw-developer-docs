@@ -3,6 +3,115 @@ sidebar_position: 100
 title: FAQ & Troubleshooting
 ---
 
+import Head from '@docusaurus/Head';
+
+<Head>
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How are API requests billed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "HitPaw API uses a credit-based billing system. Credits (coins) are deducted based on the specific API you call (Image Enhancement, Video Enhancement, Image Segmentation, etc.). For detailed pricing, refer to the API Pricing Guide."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "I purchased credits, but my API calls still return 110402000 (The coins are not enough). What should I do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Purchased credits synchronize within 1 to 3 minutes. If it exceeds 5 minutes, verify your balance on the HitPaw API Platform, ensure your Apikey header matches the recharged account, and contact support if the issue persists."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do I find or create my API key?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can manage and create your API keys on the HitPaw API Platform in the API Keys section."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How should I pass my API key in requests?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pass your API key as a custom header named 'Apikey' in all HTTP requests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the API rate limits?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If you exceed the allowed request frequency, you will receive an HTTP 429 status (100429000). Implement an exponential backoff strategy in your retry mechanism."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does my task fail with a download error or Invalid URL?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This occurs when our servers cannot fetch the media URL. We highly recommend using the OSS Pre-sign Upload API to upload files directly to our secure storage first."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "My task status remains stuck in CONVERTING (e.g., over 15 minutes) or fails silently. What causes this?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This is usually caused by network timeouts fetching your external URL, or high server load causing queueing. Use the OSS Pre-sign Upload API for stability, and implement adequate timeout limits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the input media file limits?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For Image Enhancement: Max 70 MP (standard) or 34 MP (diffusion). For Video Enhancement: Max output 36 MP, duration between 0.5s and 1 hour."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which image and video formats are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Images: .jpg, .jpeg, .png, .webp, .bmp, .jfif, .tga, .tiff, .heif. Videos: .mp4, .mov, .avi, .mkv, .flv, .mpeg, .webm, .wmv, .gif."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do my ultra-high-resolution output videos (e.g., 7.5K) stutter when playing in QuickTime or PotPlayer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This is a hardware decoding limitation of standard players. Use VLC Media Player or IINA for smooth playback of videos exceeding 4K."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How often should I poll the /api/task-status endpoint?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For image processing: every 2 to 5 seconds. For video processing: every 5 to 10 seconds. Set a maximum number of attempts to prevent infinite loops."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long are the enhanced files stored on HitPaw servers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "All processed output files are automatically deleted after 7 days. Please download them to your own storage."
+          }
+        }
+      ]
+    })}
+  </script>
+</Head>
+
 # FAQ & Troubleshooting
 
 This guide provides answers to frequently asked questions and troubleshooting steps for common issues encountered when integrating and using the HitPaw Enhancement API.
