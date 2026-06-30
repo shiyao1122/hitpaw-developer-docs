@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-export default function CookieConsent(): JSX.Element | null {
+export default function CookieConsent(): React.ReactElement | null {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
