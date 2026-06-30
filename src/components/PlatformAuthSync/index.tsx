@@ -12,23 +12,10 @@ const PROFILE_ENDPOINTS = [
 ];
 const PROFILE_CACHE_TTL = 5 * 60 * 1000;
 const PROFILE_RETRY_DELAY = 30 * 1000;
-const AUTH_COOKIE_NAMES = [
-  'access_token',
-  'authorization',
-  'tokenid',
-  'email',
-  'user_email',
-  'account_email',
-  'login_email',
-  'avatar',
-  'avatar_url',
-  'avatarUrl',
-  'photo',
-  'picture',
-  'portrait',
-  'headimg',
-  'head_img',
-];
+const EMAIL_FIELD_KEYS = ['email', 'user_email', 'account_email', 'login_email'];
+const AVATAR_FIELD_KEYS = ['avatar', 'avatar_url', 'avatarUrl', 'photo', 'picture', 'portrait', 'headimg', 'head_img'];
+const PROFILE_CONTAINER_KEYS = ['data', 'result', 'user', 'userInfo', 'user_info', 'profile', 'account', 'info'];
+const AUTH_COOKIE_NAMES = ['access_token', 'authorization', 'tokenid', ...EMAIL_FIELD_KEYS, ...AVATAR_FIELD_KEYS];
 
 type AccountProfile = Record<string, unknown>;
 
@@ -123,14 +110,6 @@ function decodeBase64Url(input: string): string | null {
   }
 }
 
-function isAvatarLikeKey(key: string): boolean {
-  return /avatar|photo|picture|portrait|headimg|head_img|avatar_url|avatarUrl/i.test(key);
-}
-
-function isEmailLikeKey(key: string): boolean {
-  return /email|mail/i.test(key);
-}
-
 function isEmailLikeValue(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
@@ -177,18 +156,11 @@ function extractAvatarFromValue(value: unknown, depth = 0): string | null {
 
   if (typeof value === 'object') {
     for (const [key, nestedValue] of Object.entries(value as Record<string, unknown>)) {
-      if (isAvatarLikeKey(key)) {
+      if (AVATAR_FIELD_KEYS.includes(key) || PROFILE_CONTAINER_KEYS.includes(key)) {
         const avatarSrc = extractAvatarFromValue(nestedValue, depth + 1);
         if (avatarSrc) {
           return avatarSrc;
         }
-      }
-    }
-
-    for (const nestedValue of Object.values(value as Record<string, unknown>)) {
-      const avatarSrc = extractAvatarFromValue(nestedValue, depth + 1);
-      if (avatarSrc) {
-        return avatarSrc;
       }
     }
   }
@@ -219,7 +191,7 @@ function extractEmailFromValue(value: unknown, depth = 0): string | null {
     const entries = Object.entries(value as Record<string, unknown>);
 
     for (const [key, nestedValue] of entries) {
-      if (isEmailLikeKey(key)) {
+      if (EMAIL_FIELD_KEYS.includes(key) || PROFILE_CONTAINER_KEYS.includes(key)) {
         const email = extractEmailFromValue(nestedValue, depth + 1);
         if (email) {
           return email;
@@ -227,11 +199,9 @@ function extractEmailFromValue(value: unknown, depth = 0): string | null {
       }
     }
 
-    for (const [, nestedValue] of entries) {
-      const email = extractEmailFromValue(nestedValue, depth + 1);
-      if (email) {
-        return email;
-      }
+    const directEmail = (value as Record<string, unknown>).email;
+    if (typeof directEmail === 'string' && isEmailLikeValue(directEmail)) {
+      return directEmail.trim();
     }
   }
 
@@ -301,11 +271,7 @@ function getAvatarFromCookie(): string | null {
 }
 
 function getEmailFromCookie(): string | null {
-  for (const name of AUTH_COOKIE_NAMES) {
-    if (!isEmailLikeKey(name)) {
-      continue;
-    }
-
+  for (const name of EMAIL_FIELD_KEYS) {
     const cookieValue = getCookieValue(name);
     if (cookieValue && isEmailLikeValue(cookieValue)) {
       return cookieValue.trim();
