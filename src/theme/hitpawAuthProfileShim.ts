@@ -1,3 +1,4 @@
+// Normalize the platform profile payload before the auth UI reads it.
 const PROFILE_ENDPOINT_PATTERN = /\/(?:account\/info|api\/v1\/account\/info|api\/account\/info)(?:[/?#]|$)/i;
 
 function isEmailLikeValue(value: string): boolean {
