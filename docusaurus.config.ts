@@ -136,13 +136,18 @@ const config: Config = {
         },
         { to: '/changelog', label: 'Changelog', position: 'left' },
         {
+          href: 'https://github.com/HitPaw-Official',
+          label: 'GitHub',
+          position: 'right',
+        },
+        {
           href: 'https://forms.gle/Kh8DVXjk8bs9SNoY7',
           label: 'Apply for Credits',
           position: 'right',
         },
         {
-          href: 'https://github.com/HitPaw-Official',
-          label: 'GitHub',
+          href: 'https://platform.hitpaw.com/',
+          label: 'Login',
           position: 'right',
         },
       ],
