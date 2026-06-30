@@ -1,0 +1,2 @@
+Trigger a fresh production deployment after the signed-in avatar update.
+This file is intentionally harmless and does not affect the docs build.
