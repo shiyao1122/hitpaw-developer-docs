@@ -33,6 +33,32 @@
   --ifm-font-family-base: "Montserrat", system-ui, "-apple-system", "Segoe UI", "Roboto", "Helvetica Neue", "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+/* 紧缩导航右侧的间距，避免登录区和搜索显得过散 */
+.navbar__items--right {
+  column-gap: 0.08rem;
+}
+
+.navbar__items--right > .navbar__item,
+.navbar__items--right > a.navbar__item,
+.navbar__items--right > button.navbar__item {
+  margin-right: 0.08rem;
+}
+
+.navbar__items--right .authShell {
+  margin-left: 0.02rem;
+  margin-right: 0.02rem;
+}
+
+.navbar__items--right .navbar__search {
+  margin-right: 0.08rem;
+}
+
+.navbar__items--right .navbar__search .navbar__search-input {
+  height: 36px;
+  padding-left: 2rem;
+  font-size: 0.88rem;
+}
+
 
 /* 强制修改 footer 的背景色 */
 .footer {
