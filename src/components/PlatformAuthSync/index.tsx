@@ -12,6 +12,7 @@ const PROFILE_ENDPOINTS = [
 ];
 const PROFILE_CACHE_TTL = 5 * 60 * 1000;
 const PROFILE_RETRY_DELAY = 30 * 1000;
+// Keep these keys aligned with the platform profile payload fields.
 const EMAIL_FIELD_KEYS = ['email', 'user_email', 'account_email', 'login_email'];
 const AVATAR_FIELD_KEYS = ['avatar', 'avatar_url', 'avatarUrl', 'photo', 'picture', 'portrait', 'headimg', 'head_img'];
 const PROFILE_CONTAINER_KEYS = ['data', 'result', 'user', 'userInfo', 'user_info', 'profile', 'account', 'info'];
