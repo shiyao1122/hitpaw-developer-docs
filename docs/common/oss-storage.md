@@ -1,75 +1,18 @@
 ---
 sidebar_position: 1
-title: File Upload
-description: Upload files to OSS using STS credentials or a pre-signed URL.
+title: OSS Pre-sign Upload
+description: API documentation for HitPaw OSS Pre-sign Upload, enabling secure and direct file uploads to cloud storage.
 ---
 
-import React from 'react';
+import LLMPageActions from '@site/src/components/LLMPageActions';
 
-export const NativeDetails = ({children}) => React.createElement('details', null, children);
+# OSS Pre-sign Upload API
 
-# File Upload
-
-## STS Upload — Recommended
-
-Use a temporary STS credential and an Alibaba Cloud OSS SDK to upload files directly. This method supports SDK features such as multipart upload and progress reporting. You need the numeric account ID associated with your API key to construct the permitted object path. If you do not know your account ID, use the pre-signed upload method below.
-
-### Get temporary credentials
-
-```http
-GET https://api-base.hitpaw.com/api/oss/sts-token
-APIKEY: YOUR_API_KEY
-```
-
-No request body or query parameters are required. A successful response has `code: 200` and a `data` object containing `access_key_id`, `access_key_secret`, `security_token`, `expiration`, `region`, `bucket`, and `endpoint`. The credential is temporary; use `expiration` to determine when to refresh it.
-
-Keep your API key and the temporary secret and security token secure. Do not publish them in client-side code, logs, or repositories. For browser applications, obtain credentials through your own authenticated backend.
-
-### Upload a file
-
-The credential permits uploads only under `uploads/{user_id}/`, where `user_id` is the numeric account ID bound to the API key. It cannot list, read, or delete objects. Use a unique object name to avoid overwriting an existing file.
-
-The following Python example uses the [Alibaba Cloud OSS Python SDK](https://github.com/aliyun/aliyun-oss-python-sdk). Install `requests` and `oss2`, and set `HITPAW_API_KEY` and `HITPAW_USER_ID` in your environment before running it.
-
-```python
-import os
-import uuid
-from pathlib import Path
-from urllib.parse import quote, urlsplit
-
-import oss2
-import requests
-
-file_path = Path('photo.jpg')
-user_id = os.environ['HITPAW_USER_ID']  # Numeric account ID for this API key
-response = requests.get(
-    'https://api-base.hitpaw.com/api/oss/sts-token',
-    headers={'APIKEY': os.environ['HITPAW_API_KEY']},
-    timeout=30,
-)
-response.raise_for_status()
-result = response.json()
-if result.get('code') != 200:
-    raise RuntimeError(result.get('message', 'Failed to obtain STS credentials'))
-data = result['data']
-
-# The endpoint may already include https://; normalize it before use.
-endpoint = data['endpoint']
-if '://' not in endpoint:
-    endpoint = 'https://' + endpoint
-host = urlsplit(endpoint).netloc
-auth = oss2.StsAuth(data['access_key_id'], data['access_key_secret'], data['security_token'])
-bucket = oss2.Bucket(auth, endpoint, data['bucket'])
-object_key = f'uploads/{user_id}/{uuid.uuid4().hex}{file_path.suffix}'
-bucket.put_object_from_file(object_key, str(file_path))
-access_url = f"https://{data['bucket']}.{host}/{quote(object_key, safe='/')}"
-print('Uploaded object URL:', access_url)
-```
-
-The URL is accessible only if the bucket or object allows the intended reader access. Before submitting it to an API, verify that it can be fetched without authentication. A `403` during upload can indicate an expired credential, a missing security token, or an object key outside the permitted account prefix.
-
-<NativeDetails>
-<summary>Alternative: OSS Pre-sign Upload (click to expand)</summary>
+<LLMPageActions
+  llmsPath="/common/oss-presign-put-api/llms.txt"
+  pageTitle="HitPaw OSS Pre-sign Upload API"
+  publicPageUrl="https://developer.hitpaw.com/common/oss-presign-put-api"
+/>
 
 
 ## Overview
@@ -491,6 +434,4 @@ suspend fun presignUpload(file: File): String {
 :::tip Ready to Start?
 Get started by purchasing and managing your keys on the [HitPaw API Platform](https://platform.hitpaw.com/) to unlock full access to the HitPaw Enhancement API.
 :::
-
-</NativeDetails>
 
