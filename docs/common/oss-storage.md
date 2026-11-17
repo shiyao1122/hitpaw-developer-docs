@@ -1,21 +1,279 @@
 ---
 sidebar_position: 1
-title: OSS Pre-sign Upload
-description: API documentation for HitPaw OSS Pre-sign Upload, enabling secure and direct file uploads to cloud storage.
+title: File Upload
+description: Upload files to OSS using STS credentials or a pre-signed URL.
 ---
 
-import LLMPageActions from '@site/src/components/LLMPageActions';
+import React from 'react';
 
-# OSS Pre-sign Upload API
+export const NativeDetails = ({children}) => React.createElement('details', null, children);
 
-<LLMPageActions
-  llmsPath="/common/oss-presign-put-api/llms.txt"
-  pageTitle="HitPaw OSS Pre-sign Upload API"
-  publicPageUrl="https://developer.hitpaw.com/common/oss-presign-put-api"
-/>
+# File Upload
+
+## OSS STS Upload <span className="badge badge--success">Recommended</span> {#sts-section-1}
+
+### Overview {#sts-section-2}
+
+Use this API to upload files directly from a client (Web, Mobile, Desktop) to Alibaba Cloud OSS. The server returns a temporary credential. The client does not need a long-term AccessKey.
+
+The credential can only upload files, and only under the directory returned in `object_prefix`. It cannot list, download, or delete objects.
+
+Workflow:
+
+1. Call `GET /api/oss/sts-token` with your API key.
+2. Create an OSS client with the returned credential, bucket, and endpoint.
+3. Upload the file to an object key that starts with `object_prefix`.
+4. After the upload succeeds, the file is available at `https://{bucket}.{endpoint}/{object_key}`.
+
+The credential expires at `expiration`. Default lifetime is 1 hour. Request a new token before it expires, then continue the upload with the new credential.
+
+### Step 1: Get STS Token {#sts-section-3}
+
+#### Request {#sts-section-4}
+
+```http
+GET /api/oss/sts-token
+Apikey: YOUR_API_KEY
+```
+
+No query parameters and no request body.
+
+##### Request Headers {#sts-section-5}
+
+| Header | Type | Required | Description |
+| --- | --- | --- | --- |
+| `Apikey` | string | Yes | Your API key. Same header as the other open APIs. |
+
+#### Response {#sts-section-6}
+
+##### Response Body {#sts-section-7}
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `access_key_id` | string | Temporary AccessKey ID. |
+| `access_key_secret` | string | Temporary AccessKey Secret. |
+| `security_token` | string | Security token. Pass it to the OSS client together with the AccessKey. |
+| `expiration` | string | Expiration time, UTC, format `yyyy-MM-ddTHH:mm:ssZ`. |
+| `region` | string | Region ID, for example `us-west-1`. |
+| `bucket` | string | Bucket name. |
+| `endpoint` | string | OSS endpoint, for example `https://oss-us-west-1.aliyuncs.com`. Normalize the scheme before constructing URLs. |
+| `object_prefix` | string | The only directory this credential can write. Format: `uploads/{user_id}/`. Every object key must start with this value. |
+
+##### Example Response {#sts-section-8}
+
+```json
+{
+  "code": 200,
+  "message": "OK",
+  "data": {
+    "access_key_id": "STS.NTxxxxxxxx",
+    "access_key_secret": "your-temporary-secret",
+    "security_token": "CAISxxxxxxxx",
+    "expiration": "2026-11-13T07:14:00Z",
+    "region": "us-west-1",
+    "bucket": "your-bucket",
+    "endpoint": "https://oss-us-west-1.aliyuncs.com",
+    "object_prefix": "uploads/10086/"
+  }
+}
+```
+
+### Step 2: Upload File to OSS {#sts-section-9}
+
+Create an OSS client with `access_key_id`, `access_key_secret`, `security_token`, `bucket`, and `endpoint`.
+
+Build the object key from the returned prefix:
+
+```text
+{object_prefix}{your-file-name}
+```
+
+Example:
+
+```text
+uploads/10086/2026/11/13/a1b2c3d4.jpg
+```
+
+Use a unique file name. A later upload with the same object key overwrites the previous file.
+
+Access URL after a successful upload:
+
+```text
+https://{bucket}.{endpoint}/{object_key}
+```
+
+Example:
+
+```text
+https://your-bucket.oss-us-west-1.aliyuncs.com/uploads/10086/2026/11/13/a1b2c3d4.jpg
+```
+
+OSS returns `403` in these cases:
+
+- The object key does not start with `object_prefix`.
+- The credential is expired.
+- `security_token` was not passed to the OSS client.
+
+Simple upload and multipart upload are both allowed. There is no file-type whitelist on this API.
+
+### Client Examples {#sts-section-10}
+
+#### cURL {#sts-section-11}
+
+```bash
+curl "https://api-base.hitpaw.com/api/oss/sts-token" \
+  -H "Apikey: YOUR_API_KEY"
+```
+
+Use an OSS SDK for the upload itself. The examples below do that.
+
+#### JavaScript {#sts-section-12}
+
+```javascript
+import OSS from 'ali-oss';
+
+const tokenResp = await fetch('https://api-base.hitpaw.com/api/oss/sts-token', {
+  headers: { Apikey: 'YOUR_API_KEY' },
+});
+const body = await tokenResp.json();
+if (body.code !== 200) {
+  throw new Error(body.message || 'failed to get sts token');
+}
+
+const { data } = body;
+const endpointHost = data.endpoint.replace(/^https?:\/\//i, '').replace(/\/$/, '');
+const client = new OSS({
+  region: data.region.startsWith('oss-') ? data.region : `oss-${data.region}`,
+  accessKeyId: data.access_key_id,
+  accessKeySecret: data.access_key_secret,
+  stsToken: data.security_token,
+  bucket: data.bucket,
+  endpoint: `https://${endpointHost}`,
+  secure: true,
+});
+
+const objectKey = `${data.object_prefix}${crypto.randomUUID()}-${file.name}`;
+await client.multipartUpload(objectKey, file, {
+  progress: (percent) => {
+    console.log(`Upload progress: ${Math.round(percent * 100)}%`);
+  },
+});
+
+const accessUrl = `https://${data.bucket}.${endpointHost}/${objectKey}`;
+console.log('Access URL:', accessUrl);
+```
+
+#### Swift (iOS) {#sts-section-13}
+
+```swift
+import AliyunOSSiOS
+
+struct STSData: Decodable {
+    let accessKeyID: String
+    let accessKeySecret: String
+    let securityToken: String
+    let bucket: String
+    let endpoint: String
+    let objectPrefix: String
+
+    enum CodingKeys: String, CodingKey {
+        case accessKeyID = "access_key_id"
+        case accessKeySecret = "access_key_secret"
+        case securityToken = "security_token"
+        case bucket, endpoint
+        case objectPrefix = "object_prefix"
+    }
+}
+
+func upload(file: Data, filename: String) async throws -> String {
+    var req = URLRequest(url: URL(string: "\(baseURL)/api/oss/sts-token")!)
+    req.setValue("YOUR_API_KEY", forHTTPHeaderField: "Apikey")
+    let (data, _) = try await URLSession.shared.data(for: req)
+
+    struct Envelope: Decodable { let code: Int; let data: STSData }
+    let sts = try JSONDecoder().decode(Envelope.self, from: data).data
+
+    let provider = OSSStsTokenCredentialProvider(
+        accessKeyId: sts.accessKeyID,
+        secretKeyId: sts.accessKeySecret,
+        securityToken: sts.securityToken
+    )
+    let endpointHost = sts.endpoint.replacingOccurrences(of: "^https?://", with: "", options: .regularExpression)
+        .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+    let client = OSSClient(endpoint: "https://\(endpointHost)", credentialProvider: provider)
+
+    let objectKey = sts.objectPrefix + filename
+    let put = OSSPutObjectRequest()
+    put.bucketName = sts.bucket
+    put.objectKey = objectKey
+    put.uploadingData = file
+
+    try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+        let task = client.putObject(put)
+        task.continue({ result in
+            if let error = result?.error {
+                continuation.resume(throwing: error)
+            } else {
+                continuation.resume()
+            }
+            return nil
+        })
+    }
+
+    return "https://\(sts.bucket).\(endpointHost)/\(objectKey)"
+}
+```
+
+#### Kotlin (Android) {#sts-section-14}
+
+```kotlin
+suspend fun upload(context: Context, file: File): String {
+    val http = OkHttpClient()
+    val tokenReq = Request.Builder()
+        .url("$baseUrl/api/oss/sts-token")
+        .header("Apikey", "YOUR_API_KEY")
+        .get()
+        .build()
+    val tokenResp = http.newCall(tokenReq).await()
+    val body = JSONObject(tokenResp.body!!.string())
+    if (!tokenResp.isSuccessful || body.optInt("code") != 200) {
+        throw IOException(body.optString("message", "failed to get sts token"))
+    }
+
+    val data = body.getJSONObject("data")
+    val endpoint = data.getString("endpoint").removePrefix("https://").removePrefix("http://").trimEnd('/')
+    val bucket = data.getString("bucket")
+    val objectKey = data.getString("object_prefix") + file.name
+
+    val provider = OSSStsTokenCredentialProvider(
+        data.getString("access_key_id"),
+        data.getString("access_key_secret"),
+        data.getString("security_token")
+    )
+    val client = OSSClient(context, "https://$endpoint", provider)
+    client.putObject(PutObjectRequest(bucket, objectKey, file.absolutePath))
+    return "https://$bucket.$endpoint/$objectKey"
+}
+```
+
+### STS Error Codes {#sts-section-15}
+
+| HTTP Status | `code` | Description |
+| --- | --- | --- |
+| 400 | `110400000` | API key is missing or invalid. `message` is `api_key is not valid`. |
+| 402 | `110402001` | The account has no remaining credits. `message` is `The coins is not enough`. |
+| 500 | `500` | Failed to issue the credential. `message` is `服务器内部错误`. |
+
+:::note Security
+Keep your API key and temporary credentials secure. For browser applications, obtain credentials through your own authenticated backend rather than exposing your API key in client-side code.
+:::
+## OSS Pre-sign Upload
+
+<NativeDetails>
+<summary>Alternative: OSS Pre-sign Upload (click to expand)</summary>
 
 
-## Overview
+#### Overview
 
 The pre-sign upload mechanism allows clients (Web, Mobile, Desktop) to upload files directly to Alibaba Cloud OSS using a signed URL. This eliminates the need for clients to hold AccessKeys or manually set signature headers, ensuring a secure and streamlined upload process.
 
@@ -32,9 +290,9 @@ Files successfully uploaded using this pre-sign upload mechanism are temporary s
 
 ---
 
-## Step 1: Get Pre-Signed Upload URL
+#### Step 1: Get Pre-Signed Upload URL
 
-### Request
+##### Request
 
 ```http
 POST /api/oss/presign-put
@@ -42,7 +300,7 @@ Content-Type: application/json
 Apikey: YOUR_API_KEY
 ```
 
-#### Request Body
+###### Request Body
 
 | Field              | Type   | Required | Description                                                                                                                             |
 | ------------------ | ------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -50,7 +308,7 @@ Apikey: YOUR_API_KEY
 | `content_type`   | string | Yes      | The Content-Type of the file. Supported values are listed in the [Supported File Types](#supported-file-types) section. |
 | `expire_seconds` | int    | No       | The validity period of the pre-signed URL in seconds. Range: 60-7200. Default: 3600.                                                    |
 
-#### Example Request
+###### Example Request
 
 ```json
 {
@@ -60,9 +318,9 @@ Apikey: YOUR_API_KEY
 }
 ```
 
-### Response
+##### Response
 
-#### Response Body
+###### Response Body
 
 | Field            | Type   | Description                                                                                                              |
 | ---------------- | ------ | ------------------------------------------------------------------------------------------------------------------------ |
@@ -72,7 +330,7 @@ Apikey: YOUR_API_KEY
 | `content_type` | string | The Content-Type the client**must** set during the PUT request. This must match the actual request header exactly. |
 | `expire_at`    | int    | The expiration timestamp of the pre-signed URL (Unix timestamp, in seconds).                                             |
 
-#### Example Response
+###### Example Response
 
 ```json
 {
@@ -89,9 +347,9 @@ Apikey: YOUR_API_KEY
 
 ---
 
-## Step 1 (Batch): Batch Get Pre-Signed Upload URLs
+#### Step 1 (Batch): Batch Get Pre-Signed Upload URLs
 
-### Request
+##### Request
 
 ```http
 POST /api/oss/presign-put/batch
@@ -99,7 +357,7 @@ Content-Type: application/json
 Apikey: YOUR_API_KEY
 ```
 
-#### Request Body
+###### Request Body
 
 | Field                    | Type   | Required | Description                                                                       |
 | ------------------------ | ------ | -------- | --------------------------------------------------------------------------------- |
@@ -108,7 +366,7 @@ Apikey: YOUR_API_KEY
 | `files[].content_type` | string | Yes      | The Content-Type of the file. Supported values are listed in the [Supported File Types](#supported-file-types) section. |
 | `expire_seconds`       | int    | No       | A unified validity period for all URLs in seconds. Range: 60-7200. Default: 3600. |
 
-#### Example Request
+###### Example Request
 
 ```json
 {
@@ -121,9 +379,9 @@ Apikey: YOUR_API_KEY
 }
 ```
 
-### Response
+##### Response
 
-#### Response Body
+###### Response Body
 
 | Field                    | Type   | Description                                                                         |
 | ------------------------ | ------ | ----------------------------------------------------------------------------------- |
@@ -137,7 +395,7 @@ Apikey: YOUR_API_KEY
 | `items[].content_type` | string | The Content-Type the client must use during the PUT request.                        |
 | `items[].expire_at`    | int    | Expire time (Unix timestamp, in seconds).                                           |
 
-#### Example Response
+###### Example Response
 
 ```json
 {
@@ -175,28 +433,28 @@ Apikey: YOUR_API_KEY
 
 ---
 
-## Step 2: Upload File to OSS
+#### Step 2: Upload File to OSS
 
 After obtaining the pre-signed URL (Step 1), the client must perform a direct upload to OSS.
 
-### Request
+##### Request
 
 ```http
 PUT {upload_url}
 Content-Type: {content_type}
 ```
 
-#### Request Headers
+###### Request Headers
 
 | Header         | Type   | Required | Description                                                                                                                             |
 | -------------- | ------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | `Content-Type` | string | Yes      | Must strictly match the `content_type` returned in the response from Step 1.                                                            |
 
-#### Request Body
+###### Request Body
 
 *   **Binary Data**: The actual file content to be uploaded (the raw byte stream).
 
-#### Example Request
+###### Example Request
 
 ```bash
 # Replace {upload_url} and {content_type} with the values returned in Step 1
@@ -206,14 +464,14 @@ curl -X PUT \
   "https://bucket.oss-us-west-1.aliyuncs.com/uploads/..."
 ```
 
-### Response
+##### Response
 
-#### Response Status
+###### Response Status
 
 *   **200 OK**: Upload successful.
 *   **403 Forbidden**: Signature mismatch or expired URL. Usually caused by an incorrect `Content-Type` header or the URL exceeding its `expire_seconds`.
 
-#### Example Response
+###### Example Response
 
 ```http
 HTTP/1.1 200 OK
@@ -226,7 +484,7 @@ Date: Wed, 25 Mar 2026 12:00:00 GMT
 
 ---
 
-## Supported File Types
+#### Supported File Types
 
 | Type     | Extension            | Content-Type         |
 | -------- | -------------------- | -------------------- |
@@ -250,9 +508,9 @@ File extensions that are not in the whitelist will return a 400 error.
 
 ---
 
-## Client Upload Examples
+#### Client Upload Examples
 
-### cURL
+##### cURL
 
 ```bash
 # 1. Get the pre-signed URL
@@ -268,7 +526,7 @@ curl -X PUT \
   "<upload_url>"
 ```
 
-### JavaScript (Web Frontend)
+##### JavaScript (Web Frontend)
 
 ```javascript
 // 1. Get the pre-signed URL
@@ -300,7 +558,7 @@ if (uploadResp.ok) {
 }
 ```
 
-### JavaScript (XMLHttpRequest with Progress)
+##### JavaScript (XMLHttpRequest with Progress)
 
 ```javascript
 async function uploadWithProgress(file, onProgress) {
@@ -348,7 +606,7 @@ uploadWithProgress(fileInput.files[0], (pct) => {
 });
 ```
 
-### Swift (iOS)
+##### Swift (iOS)
 
 ```swift
 func presignUpload(file: Data, filename: String) async throws -> String {
@@ -381,7 +639,7 @@ func presignUpload(file: Data, filename: String) async throws -> String {
 }
 ```
 
-### Kotlin (Android)
+##### Kotlin (Android)
 
 ```kotlin
 suspend fun presignUpload(file: File): String {
@@ -423,13 +681,15 @@ suspend fun presignUpload(file: File): String {
 
 ---
 
-## Error Codes
+#### Pre-sign Error Codes {#error-codes}
 
 | HTTP Status Code | Description                                                                 |
 | ---------------- | --------------------------------------------------------------------------- |
 | 400              | Parameter error: missing filename, extension not in whitelist, etc.         |
 | 401              | Authentication failed                                                       |
 | 500              | Server error: OSS client not initialized, signature generation failed, etc. |
+
+</NativeDetails>
 
 :::tip Ready to Start?
 Get started by purchasing and managing your keys on the [HitPaw API Platform](https://platform.hitpaw.com/) to unlock full access to the HitPaw Enhancement API.
